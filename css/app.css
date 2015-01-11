@@ -30,7 +30,6 @@ body {
       bottom: 0;
 
       transition: transform 1s linear 0s;
-      transform: rotateZ(45deg);
     }
 
       #dial {
