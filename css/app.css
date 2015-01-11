@@ -16,6 +16,7 @@ body {
   padding: 2rem;
   max-width: 500px;
   margin: 0 auto;
+  overflow: hidden;
 }
 
   #compass {
