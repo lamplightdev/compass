@@ -20,5 +20,7 @@ function onOrientationChange(event) {
     }
   }
 
+  headingPrevious = heading;
+
   rose.style.transform = "rotateZ(" + (heading + rotations*360) + "deg)";
 }
