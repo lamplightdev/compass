@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#CD000A">
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" sizes="192x192" href="img/logo.png">
+
+    <title>Compass</title>
+
+    <link rel='stylesheet' href='css/app.css'>
+</head>
+
+<body>
+
+  <div id='container'>
+    <div id='compass'>
+      <div id='rose'>
+        <svg id='dial' viewBox="0 0 120 120" version="1.1" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="60" cy="60" r="59" stroke="black" stroke-width="2" fill="none" />
+
+          <polyline points="55,1  65,1  60,12" fill="black"/>
+          <polyline points="119,55  119,65  114,60" fill="black"/>
+          <polyline points="55,119  65,119  60,114" fill="black"/>
+          <polyline points="1,55  1,65  6,60" fill="black"/>
+        </svg>
+
+        <div id="points">
+          <div class='point' id="point-N">N</div>
+          <div class='point' id="point-E">E</div>
+          <div class='point' id="point-S">S</div>
+          <div class='point' id="point-W">W</div>
+        </div>
+      </div>
+
+      <svg id='pointer' viewBox="0 0 120 120" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <polyline points="55,60  65,60  60,15" fill="#b60000"/>
+        <polyline points="55,60  65,60  60,105" fill="black"/>
+
+        <circle cx="60" cy="60" r="3" fill="white" />
+      </svg>
+    </div>
+  </div>
+
+
+  <script src='js/app.js'></script>
+
+</body>
+
+
+</html>
