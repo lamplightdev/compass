@@ -1,0 +1,13 @@
+{
+  "name": "Compass",
+  "start_url": "index.html",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "images/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "density": "2"
+    }
+  ]
+}

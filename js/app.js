@@ -1,26 +1,51 @@
-var rose = document.getElementById("rose");
+(function () {
+  "use strict";
 
-var headingPrevious = 0;
-var rotations = 0;
+  var rose = document.getElementById("rose");
 
-window.addEventListener('deviceorientation', onOrientationChange);
+  var headingPrevious = 0;
+  var rotations = 0;
+  var isOrientationLocked;
 
-function onOrientationChange(event) {
-  console.log('orientation', event);
+  function onOrientationChange(event) {
+    console.log("orientation", event);
 
-  var heading = event.alpha;
+    var heading = event.alpha;
 
-  var diff = Math.abs(heading - headingPrevious);
+    var diff = Math.abs(heading - headingPrevious);
 
-  if(diff > 300) {
-    if(heading - headingPrevious < 0) {
-      rotations++;
-    } else {
-      rotations--;
+    if(diff > 300) {
+      if(heading - headingPrevious < 0) {
+        rotations++;
+      } else {
+        rotations--;
+      }
     }
+
+    headingPrevious = heading;
+
+    rose.style.transform = "rotateZ(" + (heading + rotations*360) + "deg)";
   }
 
-  headingPrevious = heading;
+  function lockOrientation(doLock) {
+    if (doLock) {
+      screen.orientation.lock("portrait").then(function () {
 
-  rose.style.transform = "rotateZ(" + (heading + rotations*360) + "deg)";
-}
+      }).catch(function (error) {
+        console.log("Screen lock orientation error:", error);
+      });
+    } else {
+      screen.orientation.unlock();
+    }
+
+    isOrientationLocked = doLock;
+  }
+
+
+  window.addEventListener("deviceorientation", onOrientationChange);
+
+  if (screen.orientation) {
+    lockOrientation(true);
+  }
+
+}());
