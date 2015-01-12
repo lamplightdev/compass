@@ -76,6 +76,61 @@ body {
     }
 
 
+#options {
+  display: flex;
+}
+
+  #options .btn {
+    flex: 1;
+
+    border: 0;
+    background: transparent;
+
+    padding: 2rem;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+
+    color: black;
+  }
+
+    #options .btn:last-child {
+      border-right: 0;
+    }
+
+  #btn-lock-orientation {
+    display: none;
+  }
+
+    #btn-lock-orientation.show {
+      display: inline-block;
+    }
+
+#overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+  #overlay.show {
+    display: block;
+  }
+
+  #popup {
+    max-width: 300px;
+    margin: 0 auto;
+
+    padding: 2rem;
+
+    background-color: white;
+    color: black;
+  }
+
+
 html.nightmode {
   background-color: black;
   color: white;
@@ -91,4 +146,9 @@ html.nightmode {
 
   html.nightmode #pointer circle {
     fill: black;
+  }
+
+  html.nightmode #options .btn {
+    color: white;
+    border-color: white;
   }

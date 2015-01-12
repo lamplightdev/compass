@@ -2,12 +2,19 @@
   "use strict";
 
   var rose = document.getElementById("rose");
+  var positionCurrent = {
+    lat: null,
+    lng: null
+  };
   var positionLat = document.getElementById("lat");
   var positionLng = document.getElementById("lng");
+  var overlay = document.getElementById("overlay");
+  var popup = document.getElementById("popup");
 
   var btnLockOrientation = document.getElementById("btn-lock-orientation");
   var btnNightmode = document.getElementById("btn-nightmode");
   var btnMap = document.getElementById("btn-map");
+  var btnInfo = document.getElementById("btn-info");
 
   var headingPrevious = 0;
   var rotations = 0;
@@ -41,6 +48,7 @@
       }).catch(function (error) {
         console.log("Screen lock orientation error:", error);
         lockOrientation(false);
+        btnLockOrientation.classList.remove("show");
       });
     } else {
       screen.orientation.unlock();
@@ -59,10 +67,13 @@
   }
 
   function locationUpdate(position) {
-    console.log("location update: ", position);
+    positionCurrent = {
+      lat: position.coords.latitude,
+      lng: position.coords.longitude,
+    };
 
-    positionLat.textContent = position.coords.latitude;
-    positionLng.textContent = position.coords.longitude;
+    positionLat.textContent = positionCurrent.lat;
+    positionLng.textContent = positionCurrent.lng;
   }
 
   function locationUpdateFail(error) {
@@ -87,7 +98,19 @@
   }
 
   function openMap() {
-    window.open("https://www.google.com/maps/place/@-15.623037,18.388672,8z", "_blank");
+    window.open("https://www.google.com/maps/place/@" + positionCurrent.lat + "," + positionCurrent.lng + ",16z", "_blank");
+  }
+
+  function openPopup() {
+    overlay.classList.add("show");
+  }
+
+  function closePopup() {
+    overlay.classList.remove("show");
+  }
+
+  function popupClick(event) {
+    event.stopPropagation();
   }
 
 
@@ -96,6 +119,9 @@
   btnLockOrientation.addEventListener("click", toggleOrientationLock);
   btnNightmode.addEventListener("click", toggleNightmode);
   btnMap.addEventListener("click", openMap);
+  btnInfo.addEventListener("click", openPopup);
+  overlay.addEventListener("click", closePopup);
+  popup.addEventListener("click", popupClick);
 
   navigator.geolocation.watchPosition(locationUpdate, locationUpdateFail, {
     enableHighAccuracy: false,
@@ -104,6 +130,7 @@
   });
 
   if (screen.orientation) {
+    btnLockOrientation.classList.add("show");
     lockOrientationRequest(true);
   }
   setNightmode(false);
