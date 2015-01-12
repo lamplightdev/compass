@@ -4,8 +4,10 @@
   var rose = document.getElementById("rose");
   var positionLat = document.getElementById("lat");
   var positionLng = document.getElementById("lng");
+
   var btnLockOrientation = document.getElementById("btn-lock-orientation");
   var btnNightmode = document.getElementById("btn-nightmode");
+  var btnMap = document.getElementById("btn-map");
 
   var headingPrevious = 0;
   var rotations = 0;
@@ -84,10 +86,16 @@
     setNightmode(!isNightMode);
   }
 
+  function openMap() {
+    window.open("https://www.google.com/maps/place/@-15.623037,18.388672,8z", "_blank");
+  }
+
 
   window.addEventListener("deviceorientation", onOrientationChange);
+
   btnLockOrientation.addEventListener("click", toggleOrientationLock);
   btnNightmode.addEventListener("click", toggleNightmode);
+  btnMap.addEventListener("click", openMap);
 
   navigator.geolocation.watchPosition(locationUpdate, locationUpdateFail, {
     enableHighAccuracy: false,
