@@ -1,6 +1,8 @@
 html {
   font-family: Arial;
   font-size: 16px;
+  background-color: white;
+  color: black;
 }
 
 body {
@@ -72,3 +74,21 @@ body {
     #pointer {
 
     }
+
+
+html.nightmode {
+  background-color: black;
+  color: white;
+}
+
+  html.nightmode #dial circle {
+    stroke: white;
+  }
+
+  html.nightmode #dial polyline, html.nightmode #pointer #pointer-south {
+    fill: white;
+  }
+
+  html.nightmode #pointer circle {
+    fill: black;
+  }

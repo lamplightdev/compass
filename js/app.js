@@ -5,10 +5,12 @@
   var positionLat = document.getElementById("lat");
   var positionLng = document.getElementById("lng");
   var btnLockOrientation = document.getElementById("btn-lock-orientation");
+  var btnNightmode = document.getElementById("btn-nightmode");
 
   var headingPrevious = 0;
   var rotations = 0;
   var isOrientationLocked;
+  var isNightMode;
 
   function onOrientationChange(event) {
     console.log("orientation", event);
@@ -65,9 +67,27 @@
     console.log("location fail: ", error);
   }
 
+  function setNightmode(on) {
+    if (on) {
+      document.documentElement.classList.add("nightmode");
+    } else {
+      document.documentElement.classList.remove("nightmode");
+    }
+
+    btnNightmode.textContent = "Night mode: ";
+    btnNightmode.textContent += on ? "on" : "off";
+
+    isNightMode = on;
+  }
+
+  function toggleNightmode() {
+    setNightmode(!isNightMode);
+  }
+
 
   window.addEventListener("deviceorientation", onOrientationChange);
   btnLockOrientation.addEventListener("click", toggleOrientationLock);
+  btnNightmode.addEventListener("click", toggleNightmode);
 
   navigator.geolocation.watchPosition(locationUpdate, locationUpdateFail, {
     enableHighAccuracy: false,
@@ -78,5 +98,6 @@
   if (screen.orientation) {
     lockOrientationRequest(true);
   }
+  setNightmode(false);
 
 }());
