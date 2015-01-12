@@ -34,7 +34,7 @@
 
   function lockOrientationRequest(doLock) {
     if (doLock) {
-      screen.orientation.lock("portrait").then(function () {
+      screen.orientation.lock(screen.orientation.type).then(function () {
         lockOrientation(true);
       }).catch(function (error) {
         console.log("Screen lock orientation error:", error);
