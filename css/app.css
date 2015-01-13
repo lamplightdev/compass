@@ -88,6 +88,8 @@ header {
     background-position: 50% 50%;
     background-repeat: no-repeat;
     background-size: contain;
+
+    -webkit-tap-highlight-color: transparent;
   }
 
     #options .btn:last-child {
