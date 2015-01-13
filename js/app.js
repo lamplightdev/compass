@@ -113,8 +113,11 @@
       document.documentElement.classList.remove("nightmode");
     }
 
-    btnNightmode.textContent = "Night mode: ";
-    btnNightmode.textContent += on ? "on" : "off";
+    if (on) {
+      btnNightmode.classList.add("active");
+    } else {
+      btnNightmode.classList.remove("active");
+    }
 
     isNightMode = on;
   }

@@ -70,20 +70,19 @@ header {
   left: 0;
   right: 0;
   bottom: 0;
-
-  background-color: blue;
 }
 
   #options .btn {
     flex: 1;
 
     border: 0;
-    background: transparent;
     color: white;
+    cursor: pointer;
 
-    padding: 2rem;
-    border-top: 1px solid white;
-    border-right: 1px solid white;
+    height: 4rem;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    border-right: 1px solid rgba(255, 255, 255, 0.5);
   }
 
     #options .btn:last-child {
@@ -97,6 +96,16 @@ header {
     #btn-lock-orientation.show {
       display: inline-block;
     }
+
+  #btn-nightmode {
+    background: transparent url(../images/sun.svg) 50% 50% no-repeat;
+    background-size: contain;
+  }
+
+    #btn-nightmode.active {
+      background-image: url(../images/moon.svg);
+    }
+
 
 #overlay {
   display: none;
