@@ -46,7 +46,11 @@
     }
 
     if (defaultOrientation !== currentOrientation[0]) {
-      adjustment -= 90;
+      if (defaultOrientation === "landscape") {
+        adjustment += 90;
+      } else {
+        adjustment -= 90;
+      }
     }
 
     if (currentOrientation[1] === "secondary") {
