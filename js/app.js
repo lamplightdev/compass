@@ -41,6 +41,10 @@
     var adjustment = 0;
     var currentOrientation = screen.orientation.type.split("-");
 
+    if (defaultOrientation === "landscape") {
+      adjustment -= 90;
+    }
+
     if (defaultOrientation !== currentOrientation[0]) {
       adjustment -= 90;
     }
