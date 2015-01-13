@@ -36,10 +36,15 @@
       }
     }
 
-    var orientation = screen.orientation || screen.mozOrientation || screen.msOrientation;
+    var orientation;
+    if (screen.orientation) {
+      orientation = screen.orientation.type;
+    } else {
+      orientation = screen.mozOrientation || screen.msOrientation;
+    }
 
     var adjustment = 0;
-    var currentOrientation = orientation.type.split("-");
+    var currentOrientation = orientation.split("-");
 
     if (defaultOrientation === "landscape") {
       adjustment -= 90;
