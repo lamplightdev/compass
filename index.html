@@ -20,28 +20,26 @@
   <div id='container'>
     <div id='compass'>
       <div id='rose'>
-        <svg id='dial' viewBox="0 0 120 120" version="1.1" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="60" cy="60" r="58" stroke="white" stroke-width="2" fill="none" />
+        <svg id='dial' viewBox="0 0 130 130" version="1.1" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="65" cy="65" r="56" stroke="white" stroke-width="2" fill="none" />
 
-          <polyline points="55,2  65,2  60,12" fill="white"/>
-          <polyline points="118,55  118,65  113,60" fill="white"/>
-          <polyline points="55,118  65,118  60,113" fill="white"/>
-          <polyline points="2,55  2,65  7,60" fill="white"/>
+          <polyline points="63,9  67,9  65,16" fill="white"/>
+          <polyline points="121,63  121,67  117,65" fill="white"/>
+          <polyline points="63,121  67,121  65,117" fill="white"/>
+          <polyline points="9,63  9,67  13,65" fill="white"/>
+
+          <text x='65' y='4.2' font-size='6' text-anchor='middle' fill='white'>N</text>
+          <text x='127' y='67' font-size='6' text-anchor='middle' fill='white'>E</text>
+          <text x='65' y='129' font-size='6' text-anchor='middle' fill='white'>S</text>
+          <text x='2.8' y='67' font-size='6' text-anchor='middle' fill='white'>W</text>
         </svg>
-
-        <div id="points">
-          <div class='point' id="point-N">N</div>
-          <div class='point' id="point-E">E</div>
-          <div class='point' id="point-S">S</div>
-          <div class='point' id="point-W">W</div>
-        </div>
       </div>
 
-      <svg id='pointer' viewBox="0 0 120 120" version="1.1" xmlns="http://www.w3.org/2000/svg">
-        <polyline points="55,60  65,60  60,15" fill="#b60000"/>
-        <polyline id="pointer-south" points="55,60  65,60  60,105" fill="white"/>
+      <svg id='pointer' viewBox="0 0 130 130" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <polyline points="62,65  68,65  65,15" fill="#b60000"/>
+        <polyline id="pointer-south" points="62,65  68,65  65,115" fill="white"/>
 
-        <circle cx="60" cy="60" r="3" fill="black" />
+        <circle cx="65" cy="65" r="2" fill="black" />
       </svg>
     </div>
   </div>
