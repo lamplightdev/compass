@@ -24,8 +24,6 @@
   var defaultOrientation;
 
   function onOrientationChange(event) {
-    console.log("orientation", event);
-
     var heading = event.alpha;
 
     var diff = Math.abs(heading - headingPrevious);
@@ -38,8 +36,10 @@
       }
     }
 
+    var orientation = screen.orientation || screen.mozOrientation || screen.msOrientation;
+
     var adjustment = 0;
-    var currentOrientation = screen.orientation.type.split("-");
+    var currentOrientation = orientation.type.split("-");
 
     if (defaultOrientation === "landscape") {
       adjustment -= 90;
