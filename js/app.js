@@ -83,9 +83,13 @@
   }
 
   function lockOrientation(locked) {
+    if (locked) {
+      btnLockOrientation.classList.add("active");
+    } else {
+      btnLockOrientation.classList.remove("active");
+    }
+
     isOrientationLocked = locked;
-    btnLockOrientation.textContent = "Lock: ";
-    btnLockOrientation.textContent += isOrientationLocked ? "on" : "off";
   }
 
   function toggleOrientationLock() {

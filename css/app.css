@@ -83,6 +83,11 @@ header {
 
     border-top: 1px solid rgba(255, 255, 255, 0.5);
     border-right: 1px solid rgba(255, 255, 255, 0.5);
+
+    background-color: transparent;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: contain;
   }
 
     #options .btn:last-child {
@@ -90,21 +95,32 @@ header {
     }
 
   #btn-lock-orientation {
+    background-image: url(../images/unlocked.svg);
     display: none;
   }
+    #btn-lock-orientation.active {
+      background-image: url(../images/locked.svg);
+    }
 
     #btn-lock-orientation.show {
       display: inline-block;
     }
 
   #btn-nightmode {
-    background: transparent url(../images/sun.svg) 50% 50% no-repeat;
-    background-size: contain;
+    background-image: url(../images/sun.svg);
   }
 
     #btn-nightmode.active {
       background-image: url(../images/moon.svg);
     }
+
+  #btn-info {
+    background-image: url(../images/info.svg);
+  }
+
+  #btn-map {
+    background-image: url(../images/pin.svg);
+  }
 
 
 #overlay {
