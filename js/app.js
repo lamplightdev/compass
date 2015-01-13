@@ -21,6 +21,8 @@
   var isOrientationLocked;
   var isNightMode;
 
+  var defaultOrientation;
+
   function onOrientationChange(event) {
     console.log("orientation", event);
 
@@ -36,9 +38,20 @@
       }
     }
 
+    var adjustment = 0;
+    var currentOrientation = screen.orientation.type.split("-");
+
+    if (defaultOrientation !== currentOrientation[0]) {
+      adjustment += 90;
+    }
+
+    if (currentOrientation[1] === "secondary") {
+      adjustment += 180;
+    }
+
     headingPrevious = heading;
 
-    rose.style.transform = "rotateZ(" + (heading + rotations*360) + "deg)";
+    rose.style.transform = "rotateZ(" + (heading + adjustment + rotations*360) + "deg)";
   }
 
   function lockOrientationRequest(doLock) {
@@ -113,6 +126,11 @@
     event.stopPropagation();
   }
 
+  if (screen.width > screen.height) {
+    defaultOrientation = "landscape";
+  } else {
+    defaultOrientation = "portrait";
+  }
 
   window.addEventListener("deviceorientation", onOrientationChange);
 
