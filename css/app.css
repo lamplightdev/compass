@@ -90,6 +90,7 @@ header {
     background-size: contain;
 
     -webkit-tap-highlight-color: transparent;
+    outline: none;
   }
 
     #options .btn:last-child {
