@@ -42,11 +42,11 @@
     var currentOrientation = screen.orientation.type.split("-");
 
     if (defaultOrientation !== currentOrientation[0]) {
-      adjustment += 90;
+      adjustment -= 90;
     }
 
     if (currentOrientation[1] === "secondary") {
-      //adjustment += 180;
+      adjustment += 180;
     }
 
     headingPrevious = heading;
