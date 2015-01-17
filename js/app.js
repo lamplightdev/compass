@@ -8,8 +8,8 @@
   };
   var positionLat = document.getElementById("lat");
   var positionLng = document.getElementById("lng");
-  var overlay = document.getElementById("overlay");
-  var popup = document.getElementById("popup");
+  var infoPopup = document.getElementById("info-popup");
+  var infoPopupContent = document.getElementById("info-popup-content");
 
   var btnLockOrientation = document.getElementById("btn-lock-orientation");
   var btnNightmode = document.getElementById("btn-nightmode");
@@ -22,6 +22,8 @@
   var isNightMode;
 
   var defaultOrientation;
+
+
 
   function onOrientationChange(event) {
     var heading = event.alpha;
@@ -102,8 +104,8 @@
       lng: position.coords.longitude,
     };
 
-    positionLat.textContent = positionCurrent.lat;
-    positionLng.textContent = positionCurrent.lng;
+    //positionLat.textContent = positionCurrent.lat;
+    //positionLng.textContent = positionCurrent.lng;
   }
 
   function locationUpdateFail(error) {
@@ -134,15 +136,15 @@
     window.open("https://www.google.com/maps/place/@" + positionCurrent.lat + "," + positionCurrent.lng + ",16z", "_blank");
   }
 
-  function openPopup() {
-    overlay.classList.add("show");
+  function openInfoPopup() {
+    infoPopup.classList.add("show");
   }
 
-  function closePopup() {
-    overlay.classList.remove("show");
+  function closeInfoPopup() {
+    infoPopup.classList.remove("show");
   }
 
-  function popupClick(event) {
+  function infoPopupContentClick(event) {
     event.stopPropagation();
   }
 
@@ -157,9 +159,9 @@
   btnLockOrientation.addEventListener("click", toggleOrientationLock);
   btnNightmode.addEventListener("click", toggleNightmode);
   btnMap.addEventListener("click", openMap);
-  btnInfo.addEventListener("click", openPopup);
-  overlay.addEventListener("click", closePopup);
-  popup.addEventListener("click", popupClick);
+  btnInfo.addEventListener("click", openInfoPopup);
+  infoPopup.addEventListener("click", closeInfoPopup);
+  infoPopupContent.addEventListener("click", infoPopupContentClick);
 
   navigator.geolocation.watchPosition(locationUpdate, locationUpdateFail, {
     enableHighAccuracy: false,

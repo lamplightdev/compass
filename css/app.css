@@ -9,62 +9,115 @@ html {
   height: 100%;
 }
 
+
+
+
+
 body {
   padding: 0;
   margin: 0;
   height: 100%;
 }
 
+
+
+
+
 * {
   box-sizing: border-box;
 }
 
-header {
-  background-color: blue;
-}
 
-  header h1 {
-    line-height: 3rem;
-    font-size: 2rem;
-    margin: 0;
-  }
 
-#container {
+
+
+.container {
   padding: 1rem 3rem 7rem 3rem;
   overflow: hidden;
 
   height: 100%;
 }
 
-  #compass {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    text-align: center;
+
+
+
+
+.compass {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+  .compass__rose {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
 
-    #rose {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-
-      /*transition: transform 1s linear 0s;*/
-    }
-
-      #dial {
-        height: 100%;
-        width: 100%;
-      }
-
-    #pointer {
+    .compass__rose__dial {
       height: 100%;
       width: 100%;
     }
 
+  .compass__pointer {
+    height: 100%;
+    width: 100%;
+  }
 
-#options {
+
+
+
+
+.btn {
+  border: 0;
+  color: white;
+  cursor: pointer;
+  text-align: center;
+
+  height: 4rem;
+
+  background-color: transparent;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: auto 50%;
+
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+  .btn:active {
+    background-color: rgba(128, 128, 128, 0.5);
+  }
+
+  .btn__icon {
+    height: 50%;
+    width: 100%;
+  }
+
+  .btn__icon--active {
+    display: none;
+  }
+
+  .btn__icon--inactive {
+    display: block;
+  }
+
+.btn.active .btn__icon--active {
+    display: block;
+  }
+
+.btn.active .btn__icon--inactive {
+    display: none;
+  }
+
+
+
+
+
+.options {
   display: flex;
   position: fixed;
   left: 0;
@@ -72,61 +125,21 @@ header {
   bottom: 0;
 }
 
-  #options .btn {
+  .options__btn {
     flex: 1;
-
-    border: 0;
-    color: white;
-    cursor: pointer;
-
-    height: 4rem;
-
-    border-top: 1px solid rgba(255, 255, 255, 0.5);
-    border-right: 1px solid rgba(255, 255, 255, 0.5);
-
-    background-color: transparent;
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
-    background-size: auto 50%;
-
-    -webkit-tap-highlight-color: transparent;
-    outline: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
   }
 
-    #options .btn:last-child {
-      border-right: 0;
-    }
-
-  #btn-lock-orientation {
-    background-image: url(../images/unlocked.svg);
-    display: none;
-  }
-    #btn-lock-orientation.active {
-      background-image: url(../images/locked.svg);
-    }
-
-    #btn-lock-orientation.show {
-      display: inline-block;
-    }
-
-  #btn-nightmode {
-    background-image: url(../images/sun.svg);
-  }
-
-    #btn-nightmode.active {
-      background-image: url(../images/moon.svg);
-    }
-
-  #btn-info {
-    background-image: url(../images/info.svg);
-  }
-
-  #btn-map {
-    background-image: url(../images/pin.svg);
+  .options__btn:last-child {
+    border-right: 0;
   }
 
 
-#overlay {
+
+
+
+.popup {
   display: none;
   position: fixed;
   top: 0;
@@ -137,11 +150,11 @@ header {
   background-color: rgba(0, 0, 0, 0.8);
 }
 
-  #overlay.show {
-    display: block;
-  }
+.popup.show {
+  display: block;
+}
 
-  #popup {
+  .popup__content {
     max-width: 300px;
     margin: 0 auto;
 
@@ -152,24 +165,11 @@ header {
   }
 
 
+
+
+
 html.nightmode {
   background: black;
   color: white;
 }
 
-  html.nightmode #dial circle {
-    stroke: white;
-  }
-
-  html.nightmode #dial polyline, html.nightmode #pointer #pointer-south {
-    fill: white;
-  }
-
-  html.nightmode #pointer circle {
-    fill: black;
-  }
-
-  html.nightmode #options .btn {
-    color: white;
-    border-color: white;
-  }
