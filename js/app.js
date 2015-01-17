@@ -20,6 +20,7 @@
   var rotations = 0;
   var isOrientationLocked;
   var isNightMode;
+  var isOrientationChangePossible = false;
 
   var defaultOrientation;
 
@@ -69,18 +70,50 @@
     rose.style.transform = "rotateZ(" + (heading + adjustment + rotations*360) + "deg)";
   }
 
-  function lockOrientationRequest(doLock) {
-    if (doLock) {
-      screen.orientation.lock(screen.orientation.type).then(function () {
-        lockOrientation(true);
-      }).catch(function (error) {
-        console.log("Screen lock orientation error:", error);
-        lockOrientation(false);
-        btnLockOrientation.classList.remove("show");
-      });
+  function onFullscreenChange() {
+    if (document.webkitFullscreenElement) {
+
     } else {
+      lockOrientationRequest(false);
+    }
+  }
+
+  function checkOrientationChangePossible() {
+    screen.orientation.lock(screen.orientation.type).then(function () {
+      toggleOrientationChangePossible(true);
+
       screen.orientation.unlock();
-      lockOrientation(false);
+    }).catch(function (event) {
+      if (event.code === 18) { // The page needs to be fullscreen in order to call lockOrientation()
+        toggleOrientationChangePossible(true);
+      } else {  // lockOrientation() is not available on this device (or other error)
+        toggleOrientationChangePossible(false);
+      }
+    });
+  }
+
+  function toggleOrientationChangePossible(possible) {
+    isOrientationChangePossible = possible;
+
+    if (possible) {
+      btnLockOrientation.classList.add("show");
+    }
+  }
+
+  function lockOrientationRequest(doLock) {
+    if (isOrientationChangePossible) {
+      if (doLock) {
+        document.documentElement.webkitRequestFullscreen();
+        screen.orientation.lock(screen.orientation.type).then(function () {
+          lockOrientation(true);
+        }).catch(function () {
+          //shouldn't get here as we've already checked in checkOrientationChangePossible if this will fail
+        });
+      } else {
+        screen.orientation.unlock();
+        document.webkitExitFullscreen();
+        lockOrientation(false);
+      }
     }
   }
 
@@ -155,6 +188,7 @@
   }
 
   window.addEventListener("deviceorientation", onOrientationChange);
+  document.addEventListener("webkitfullscreenchange", onFullscreenChange);
 
   btnLockOrientation.addEventListener("click", toggleOrientationLock);
   btnNightmode.addEventListener("click", toggleNightmode);
@@ -169,10 +203,7 @@
     timeout: 27000
   });
 
-  if (screen.orientation) {
-    btnLockOrientation.classList.add("show");
-    lockOrientationRequest(true);
-  }
   setNightmode(false);
+  checkOrientationChangePossible();
 
 }());

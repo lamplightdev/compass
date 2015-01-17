@@ -88,6 +88,14 @@ body {
   outline: none;
 }
 
+.btn--hide {
+  display: none;
+}
+
+.btn--hide.show {
+  display: block;
+}
+
   .btn:active {
     background-color: rgba(128, 128, 128, 0.5);
   }
