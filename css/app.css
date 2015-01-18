@@ -58,7 +58,7 @@ header {
   right: 0;
   left: 0;
 
-  transition: top 0.5s ease-out 0s;
+  transition: transform 0.5s ease-out 0s;
 }
 
 
@@ -70,8 +70,6 @@ header {
   overflow: hidden;
 
   height: 100%;
-
-  transition: padding 0.5s ease-out 0s;
 }
 
 
@@ -226,7 +224,7 @@ html.nightmode {
   }
 
   html.nightmode header {
-    top: -4rem;
+    transform: translateY(-4rem);
   }
 
   html.nightmode .btn svg * {
