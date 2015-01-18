@@ -22,6 +22,9 @@ h1, h2, h3, h4 {
 
 h1 {
   font-size: 1rem;
+  padding-left: 1.5rem;
+  background: transparent url(../images/logo.png) 0% 50% no-repeat;
+  background-size: 1rem;
 }
 
 
