@@ -1,5 +1,32 @@
+@font-face {
+  font-family: Muli;
+  src: url("../fonts/Muli-Light.ttf");
+}
+
+@font-face {
+  font-family: Ovo;
+  src: url("../fonts/Ovo-Regular.ttf");
+}
+
+
+
+
+
+* {
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4 {
+  font-family: Ovo, serif;
+}
+
+h1 {
+  font-size: 1rem;
+}
+
+
 html {
-  font-family: Arial;
+  font-family: Muli, sans-serif;
   font-size: 16px;
   background-color: white;
   color: white;
@@ -23,8 +50,15 @@ body {
 
 
 
-* {
-  box-sizing: border-box;
+header {
+  padding: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+
+  transition: top 0.5s ease-out 0s;
 }
 
 
@@ -32,10 +66,12 @@ body {
 
 
 .container {
-  padding: 1rem 3rem 7rem 3rem;
+  padding: 5rem 3rem 7rem 3rem;
   overflow: hidden;
 
   height: 100%;
+
+  transition: padding 0.5s ease-out 0s;
 }
 
 
@@ -87,6 +123,10 @@ body {
   -webkit-tap-highlight-color: transparent;
   outline: none;
 }
+
+  .btn svg * {
+    transition: fill 0.5s ease-out 0s;
+  }
 
 .btn--hide {
   display: none;
@@ -180,6 +220,14 @@ html.nightmode {
   background: black;
   color: white;
 }
+
+  html.nightmode .container {
+    padding-top: 3rem;
+  }
+
+  html.nightmode header {
+    top: -4rem;
+  }
 
   html.nightmode .btn svg * {
     fill: rgba(127, 127, 127, 0.5);
