@@ -146,17 +146,21 @@
   }
 
   function setNightmode(on) {
-    if (on) {
-      document.documentElement.classList.add("nightmode");
-    } else {
-      document.documentElement.classList.remove("nightmode");
-    }
 
     if (on) {
       btnNightmode.classList.add("active");
     } else {
       btnNightmode.classList.remove("active");
     }
+
+    window.setTimeout(function() {
+      if (on) {
+        document.documentElement.classList.add("nightmode");
+      } else {
+        document.documentElement.classList.remove("nightmode");
+      }
+    }, 1);
+
 
     isNightMode = on;
   }

@@ -70,6 +70,8 @@ header {
   overflow: hidden;
 
   height: 100%;
+
+  transition: transform 0.5s ease-out 0s;
 }
 
 
@@ -220,7 +222,7 @@ html.nightmode {
 }
 
   html.nightmode .container {
-    padding-top: 3rem;
+    transform: translateY(-4rem);
   }
 
   html.nightmode header {
