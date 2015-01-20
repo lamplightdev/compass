@@ -69,8 +69,6 @@
 
     headingPrevious = heading;
 
-    adjustment = adjustment < 0 ? 360 + adjustment : adjustment;
-
     positionCurrent.hng = heading + adjustment;
 
     var phase = positionCurrent.hng < 0 ? 360 + positionCurrent.hng : positionCurrent.hng;
