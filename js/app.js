@@ -52,14 +52,14 @@
     var currentOrientation = orientation.split("-");
 
     if (defaultOrientation === "landscape") {
-      adjustment += 270;
+      adjustment -= 90;
     }
 
     if (defaultOrientation !== currentOrientation[0]) {
       if (defaultOrientation === "landscape") {
         adjustment += 90;
       } else {
-        adjustment += 270;
+        adjustment -= 90;
       }
     }
 
@@ -72,7 +72,7 @@
     positionCurrent.hng = heading + adjustment;
 
     var phase = positionCurrent.hng < 0 ? 360 + positionCurrent.hng : positionCurrent.hng;
-    positionHng.textContent = 360 - phase | 0;
+    positionHng.textContent = (360 - phase | 0) + " : " + adjustment;
 
     rose.style.transform = "rotateZ(" + (positionCurrent.hng + rotations*360) + "deg)";
   }
