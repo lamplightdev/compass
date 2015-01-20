@@ -64,7 +64,7 @@
     }
 
     if (currentOrientation[1] === "secondary") {
-      adjustment += 180;
+      adjustment -= 180;
     }
 
     headingPrevious = heading;
