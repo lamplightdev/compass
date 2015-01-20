@@ -57,7 +57,7 @@
 
     if (defaultOrientation !== currentOrientation[0]) {
       if (defaultOrientation === "landscape") {
-        adjustment += 90;
+        adjustment -= 270;
       } else {
         adjustment -= 90;
       }
