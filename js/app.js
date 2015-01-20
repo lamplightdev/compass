@@ -4,10 +4,12 @@
   var rose = document.getElementById("rose");
   var positionCurrent = {
     lat: null,
-    lng: null
+    lng: null,
+    hng: null
   };
-  var positionLat = document.getElementById("lat");
-  var positionLng = document.getElementById("lng");
+  var positionLat = document.getElementById("position-lat");
+  var positionLng = document.getElementById("position-lng");
+  var positionHng = document.getElementById("position-hng");
   var infoPopup = document.getElementById("info-popup");
   var infoPopupContent = document.getElementById("info-popup-content");
 
@@ -67,7 +69,12 @@
 
     headingPrevious = heading;
 
-    rose.style.transform = "rotateZ(" + (heading + adjustment + rotations*360) + "deg)";
+    positionCurrent.hng = heading + adjustment;
+
+    var phase = positionCurrent.hng < 0 ? 360 + positionCurrent.hng : positionCurrent.hng;
+    positionHng.textContent = 360 - phase | 0;
+
+    rose.style.transform = "rotateZ(" + (positionCurrent.hng + rotations*360) + "deg)";
   }
 
   function onFullscreenChange() {
@@ -132,13 +139,11 @@
   }
 
   function locationUpdate(position) {
-    positionCurrent = {
-      lat: position.coords.latitude,
-      lng: position.coords.longitude,
-    };
+    positionCurrent.lat = position.coords.latitude;
+    positionCurrent.lng = position.coords.longitude;
 
-    //positionLat.textContent = positionCurrent.lat;
-    //positionLng.textContent = positionCurrent.lng;
+    positionLat.textContent = decimalToSexagesimal(positionCurrent.lat, "lat");
+    positionLng.textContent = decimalToSexagesimal(positionCurrent.lng, "lng");
   }
 
   function locationUpdateFail(error) {
@@ -183,6 +188,27 @@
 
   function infoPopupContentClick(event) {
     event.stopPropagation();
+  }
+
+  function decimalToSexagesimal(decimal, type) {
+    var degrees = decimal | 0;
+    var fraction = Math.abs(decimal - degrees);
+    var minutes = (fraction * 60) | 0;
+    var seconds = (fraction * 3600 - minutes * 60) | 0;
+
+    var direction = "";
+    var positive = degrees > 0;
+    degrees = Math.abs(degrees);
+    switch (type) {
+      case "lat":
+        direction = positive ? "N" : "S";
+        break;
+      case "lng":
+        direction = positive ? "E" : "W";
+        break;
+    }
+
+    return degrees + "° " + minutes + "' " + seconds + "\" " + direction;
   }
 
   if (screen.width > screen.height) {
