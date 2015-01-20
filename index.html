@@ -73,13 +73,22 @@
 
   <div class='status'>
 
-    <div class='position'>
-      Heading: <span id='position-hng'></span><br>
-      Lat: <span id='position-lat'></span><br>
-      Lng: <span id='position-lng'></span>
+    <div class='position row'>
+      <div class='column'>
+        <div class='label'>Heading</div>
+        <div id='position-hng'></div>
+      </div
+      ><div class='column'>
+        <div class='label'>Lat</div>
+        <div id='position-lat'></div>
+      </div
+      ><div class='column'>
+        <div class='label'>Lng</div>
+        <div id='position-lng'></div>
+      </div>
     </div>
 
-    <div class="options">
+    <div class="options row">
 
       <button id="btn-lock-orientation" class="btn btn--hide options__btn" type="button">
 

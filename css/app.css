@@ -40,7 +40,16 @@ html {
 }
 
 
+.column {
+  display: inline-block;
+  width: 33.33333%;
+  text-transform: uppercase;
+  text-align: center;
+}
 
+  .label {
+    font-size: 0.7rem;
+  }
 
 
 body {

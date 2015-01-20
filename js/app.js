@@ -72,7 +72,7 @@
     positionCurrent.hng = heading + adjustment;
 
     var phase = positionCurrent.hng < 0 ? 360 + positionCurrent.hng : positionCurrent.hng;
-    positionHng.textContent = (360 - phase | 0) + " : " + adjustment;
+    positionHng.textContent = (360 - phase | 0);
 
     rose.style.transform = "rotateZ(" + (positionCurrent.hng + rotations*360) + "deg)";
   }
