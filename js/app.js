@@ -84,7 +84,10 @@
   }
 
   function onOrientationChange(event) {
-    console.log(event);
+    if (!isOrientationChangePossible && event.alpha) {
+      isOrientationChangePossible = true;
+    }
+
     var heading = event.alpha;
 
     var diff = Math.abs(heading - headingPrevious);
@@ -314,6 +317,6 @@
   });
 
   setNightmode(false);
-  checkOrientationChangePossible();
+  //checkOrientationChangePossible();
 
 }());
