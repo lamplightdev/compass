@@ -27,6 +27,56 @@
   var defaultOrientation;
 
 
+  function getBrowserOrientation() {
+    var orientation;
+    if (screen.orientation && screen.orientation.type) {
+      orientation = screen.orientation.type;
+    } else {
+      orientation = screen.orientation ||
+                    screen.mozOrientation ||
+                    screen.msOrientation;
+    }
+
+    return orientation;
+  }
+
+  function browserUnlockOrientation() {
+    var func;
+    if (screen.orientation && screen.orientation.unlock) {
+      func = screen.orientation.unlock;
+    } else {
+      func = screen.unlockOrientation ||
+              screen.mozUnlockOrientation ||
+              screen.msUnlockOrientation;
+    }
+
+    func();
+  }
+
+  function getBrowserFullscreenElement() {
+    return document.fullscreenElement ||
+            document.webkitFullscreenElement ||
+            document.mozFullScreenElement ||
+            document.msFullscreenElement;
+  }
+
+  function browserRequestFullscreen() {
+    var func = document.documentElement.requestFullscreen ||
+                document.documentElement.webkitRequestFullscreen ||
+                document.documentElement.mozRequestFullScreen ||
+                document.documentElement.msRequestFullscreen;
+
+    func();
+  }
+
+  function browserExitFullscreen() {
+    var func = document.exitFullscreen ||
+                document.webkitExitFullscreen ||
+                document.mozCancelFullScreen ||
+                document.msExitFullscreen;
+
+    func();
+  }
 
   function onOrientationChange(event) {
     var heading = event.alpha;
@@ -41,13 +91,7 @@
       }
     }
 
-    var orientation;
-    if (screen.orientation) {
-      orientation = screen.orientation.type;
-    } else {
-      orientation = screen.mozOrientation || screen.msOrientation;
-    }
-
+    var orientation = getBrowserOrientation();
     var adjustment = 0;
     var currentOrientation = orientation.split("-");
 
@@ -78,7 +122,7 @@
   }
 
   function onFullscreenChange() {
-    if (document.webkitFullscreenElement) {
+    if (getBrowserFullscreenElement()) {
 
     } else {
       lockOrientationRequest(false);
@@ -86,17 +130,28 @@
   }
 
   function checkOrientationChangePossible() {
-    screen.orientation.lock(screen.orientation.type).then(function () {
-      toggleOrientationChangePossible(true);
-
-      screen.orientation.unlock();
-    }).catch(function (event) {
-      if (event.code === 18) { // The page needs to be fullscreen in order to call lockOrientation()
+    if (screen.orientation && screen.orientation.lock) {
+      screen.orientation.lock(getBrowserOrientation()).then(function () {
         toggleOrientationChangePossible(true);
-      } else {  // lockOrientation() is not available on this device (or other error)
-        toggleOrientationChangePossible(false);
+        browserUnlockOrientation();
+      }).catch(function (event) {
+        if (event.code === 18) { // The page needs to be fullscreen in order to call lockOrientation()
+          toggleOrientationChangePossible(true);
+        } else {  // lockOrientation() is not available on this device (or other error)
+          toggleOrientationChangePossible(false);
+        }
+      });
+    } else {
+      var lock = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
+
+      browserRequestFullscreen();
+      if (lock(getBrowserOrientation())) {
+        toggleOrientationChangePossible(true);
+      } else {
+          toggleOrientationChangePossible(false);
       }
-    });
+      browserExitFullscreen();
+    }
   }
 
   function toggleOrientationChangePossible(possible) {
@@ -117,15 +172,23 @@
   function lockOrientationRequest(doLock) {
     if (isOrientationChangePossible) {
       if (doLock) {
-        document.documentElement.webkitRequestFullscreen();
-        screen.orientation.lock(screen.orientation.type).then(function () {
+        browserRequestFullscreen();
+
+        if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock(getBrowserOrientation()).then(function () {
+            lockOrientation(true);
+          }).catch(function () {
+            //shouldn't get here as we've already checked in checkOrientationChangePossible if this will fail
+          });
+        } else {
+          var lock = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
+          lock(getBrowserOrientation());
           lockOrientation(true);
-        }).catch(function () {
-          //shouldn't get here as we've already checked in checkOrientationChangePossible if this will fail
-        });
+        }
+
       } else {
-        screen.orientation.unlock();
-        document.webkitExitFullscreen();
+        browserUnlockOrientation();
+        browserExitFullscreen();
         lockOrientation(false);
       }
     }
@@ -225,7 +288,11 @@
   }
 
   window.addEventListener("deviceorientation", onOrientationChange);
+
+  document.addEventListener("fullscreenchange", onFullscreenChange);
   document.addEventListener("webkitfullscreenchange", onFullscreenChange);
+  document.addEventListener("mozfullscreenchange", onFullscreenChange);
+  document.addEventListener("MSFullscreenChange", onFullscreenChange);
 
   btnLockOrientation.addEventListener("click", toggleOrientationLock);
   btnNightmode.addEventListener("click", toggleNightmode);
