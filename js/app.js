@@ -41,16 +41,15 @@
   }
 
   function browserUnlockOrientation() {
-    var func;
     if (screen.orientation && screen.orientation.unlock) {
-      func = screen.orientation.unlock;
-    } else {
-      func = screen.unlockOrientation ||
-              screen.mozUnlockOrientation ||
-              screen.msUnlockOrientation;
+      screen.orientation.unlock();
+    } else if (screen.unlockOrientation) {
+      screen.unlockOrientation();
+    } else if (screen.mozUnlockOrientation) {
+      screen.mozUnlockOrientation();
+    } else if (screen.msUnlockOrientation) {
+      screen.msUnlockOrientation();
     }
-
-    func();
   }
 
   function getBrowserFullscreenElement() {
@@ -61,21 +60,27 @@
   }
 
   function browserRequestFullscreen() {
-    var func = document.documentElement.requestFullscreen ||
-                document.documentElement.webkitRequestFullscreen ||
-                document.documentElement.mozRequestFullScreen ||
-                document.documentElement.msRequestFullscreen;
-
-    func();
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen();
+    } else if (document.documentElement.webkitRequestFullscreen) {
+      document.documentElement.webkitRequestFullscreen();
+    } else if (document.documentElement.mozRequestFullScreen) {
+      document.documentElement.mozRequestFullScreen();
+    } else if (document.documentElement.msRequestFullscreen) {
+      document.documentElement.msRequestFullscreen();
+    }
   }
 
   function browserExitFullscreen() {
-    var func = document.exitFullscreen ||
-                document.webkitExitFullscreen ||
-                document.mozCancelFullScreen ||
-                document.msExitFullscreen;
-
-    func();
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    }
   }
 
   function onOrientationChange(event) {
@@ -148,7 +153,7 @@
       if (lock(getBrowserOrientation())) {
         toggleOrientationChangePossible(true);
       } else {
-          toggleOrientationChangePossible(false);
+        toggleOrientationChangePossible(false);
       }
       browserExitFullscreen();
     }
