@@ -102,7 +102,7 @@
   function toggleOrientationChangePossible(possible) {
     isOrientationChangePossible = possible;
 
-    if (true || possible) {
+    if (possible) {
       btnLockOrientation.classList.add("show");
 
       btnNightmode.classList.add("column-25");
