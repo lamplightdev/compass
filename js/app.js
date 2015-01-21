@@ -53,10 +53,15 @@
   }
 
   function getBrowserFullscreenElement() {
-    return document.fullscreenElement ||
-            document.webkitFullscreenElement ||
-            document.mozFullScreenElement ||
-            document.msFullscreenElement;
+    if (typeof document.fullscreenElement !== "undefined") {
+      return document.fullscreenElement;
+    } else if (typeof document.webkitFullscreenElement !== "undefined") {
+      return document.webkitFullscreenElement;
+    } else if (typeof document.mozFullScreenElement !== "undefined") {
+      return document.mozFullScreenElement;
+    } else if (typeof document.msFullscreenElement !== "undefined") {
+      return document.msFullscreenElement;
+    }
   }
 
   function browserRequestFullscreen() {
