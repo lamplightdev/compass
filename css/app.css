@@ -143,7 +143,7 @@ header {
 }
 
 .btn--hide.show {
-  display: block;
+  display: inline-block;
 }
 
   .btn:active {
