@@ -191,7 +191,7 @@
           });
         } else {
           var lock = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
-          lock(getBrowserOrientation());
+          lock.call(getBrowserOrientation());
           lockOrientation(true);
         }
 
