@@ -132,7 +132,14 @@
 
   function onFullscreenChange() {
     if (getBrowserFullscreenElement()) {
-      lockOrientation(true);
+      if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock(getBrowserOrientation()).then(function () {
+        }).catch(function () {
+        });
+      } else {
+        var lock = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
+        lock(getBrowserOrientation());
+      }
     } else {
       lockOrientationRequest(false);
     }
@@ -182,7 +189,8 @@
     if (isOrientationChangePossible && doLock !== isOrientationLocked) {
       if (doLock) {
         browserRequestFullscreen();
-
+        lockOrientation(true);
+        /*
         if (screen.orientation && screen.orientation.lock) {
           screen.orientation.lock(getBrowserOrientation()).then(function () {
             //lockOrientation(true);  // this will instead be called from onFullscreenChange()
@@ -194,6 +202,7 @@
           lock(getBrowserOrientation());
           //lockOrientation(true);
         }
+        */
 
       } else {
         browserUnlockOrientation();
