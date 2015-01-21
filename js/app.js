@@ -72,7 +72,7 @@
     positionCurrent.hng = heading + adjustment;
 
     var phase = positionCurrent.hng < 0 ? 360 + positionCurrent.hng : positionCurrent.hng;
-    positionHng.textContent = (360 - phase | 0);
+    positionHng.textContent = (360 - phase | 0) + "°";
 
     rose.style.transform = "rotateZ(" + (positionCurrent.hng + rotations*360) + "deg)";
   }
@@ -104,6 +104,10 @@
 
     if (possible) {
       btnLockOrientation.classList.add("show");
+
+      btnNightmode.classList.add("column-25").remove("column-33");
+      btnMap.classList.add("column-25").remove("column-33");
+      btnInfo.classList.add("column-25").remove("column-33");
     }
   }
 

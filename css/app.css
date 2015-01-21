@@ -3,12 +3,6 @@
   src: url("../fonts/Muli-Light.ttf");
 }
 
-@font-face {
-  font-family: Ovo;
-  src: url("../fonts/Ovo-Regular.ttf");
-}
-
-
 
 
 
@@ -17,7 +11,7 @@
 }
 
 h1, h2, h3, h4 {
-  font-family: Ovo, serif;
+  font-family: Muli, serif;
 }
 
 h1 {
@@ -40,15 +34,20 @@ html {
 }
 
 
-.column {
+[class^="column-"] {
   display: inline-block;
-  width: 33.33333%;
-  text-transform: uppercase;
-  text-align: center;
 }
 
+  .column-33 {
+    width: 33.33333%;
+  }
+
+  .column-25 {
+    width: 25%;
+  }
+
   .label {
-    font-size: 0.7rem;
+    font-size: 0.5rem;
   }
 
 
@@ -78,11 +77,10 @@ header {
 
 
 .container {
-  padding: 5rem 1rem 7rem 1rem;
+  padding: 5rem 1rem 8rem 1rem;
   overflow: hidden;
 
   height: 100%;
-
   transition: transform 0.5s ease-out 0s;
 }
 
@@ -184,13 +182,17 @@ header {
   bottom: 0;
 }
 
+.position {
+  padding-bottom: 0.5rem;
+  text-transform: uppercase;
+  text-align: center;
+}
+
 .options {
-  display: flex;
 
 }
 
   .options__btn {
-    flex: 1;
     border-top: 1px solid rgba(255, 255, 255, 0.2);
     border-right: 1px solid rgba(255, 255, 255, 0.2);
   }
@@ -238,11 +240,15 @@ html.nightmode {
 }
 
   html.nightmode .container {
-    transform: translateY(-4rem);
+    transform: translateY(-2rem);
   }
 
   html.nightmode header {
     transform: translateY(-4rem);
+  }
+
+  html.nightmode .label {
+    color: rgba(127, 127, 127, 0.8);
   }
 
   html.nightmode .btn svg * {
