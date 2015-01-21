@@ -105,9 +105,12 @@
     if (possible) {
       btnLockOrientation.classList.add("show");
 
-      btnNightmode.classList.add("column-25").remove("column-33");
-      btnMap.classList.add("column-25").remove("column-33");
-      btnInfo.classList.add("column-25").remove("column-33");
+      btnNightmode.classList.add("column-25");
+      btnNightmode.classList.remove("column-33");
+      btnMap.classList.add("column-25");
+      btnMap.classList.remove("column-33");
+      btnInfo.classList.add("column-25");
+      btnInfo.classList.remove("column-33");
     }
   }
 
