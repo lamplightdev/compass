@@ -85,7 +85,7 @@
 
   function onOrientationChange(event) {
     if (!isOrientationChangePossible && event.alpha) {
-      isOrientationChangePossible = true;
+      toggleOrientationChangePossible(true);
     }
 
     var heading = event.alpha;
