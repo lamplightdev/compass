@@ -150,7 +150,7 @@
       var lock = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
 
       browserRequestFullscreen();
-      if (lock(getBrowserOrientation())) {
+      if (lock.call(getBrowserOrientation())) {
         toggleOrientationChangePossible(true);
       } else {
         toggleOrientationChangePossible(false);
