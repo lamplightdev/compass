@@ -132,7 +132,7 @@
 
   function onFullscreenChange() {
     if (getBrowserFullscreenElement()) {
-
+      lockOrientation(true);
     } else {
       lockOrientationRequest(false);
     }
@@ -179,20 +179,20 @@
   }
 
   function lockOrientationRequest(doLock) {
-    if (isOrientationChangePossible) {
+    if (isOrientationChangePossible && doLock !== isOrientationLocked) {
       if (doLock) {
         browserRequestFullscreen();
 
         if (screen.orientation && screen.orientation.lock) {
           screen.orientation.lock(getBrowserOrientation()).then(function () {
-            lockOrientation(true);
+            //lockOrientation(true);  // this will instead be called from onFullscreenChange()
           }).catch(function () {
             //shouldn't get here as we've already checked in checkOrientationChangePossible if this will fail
           });
         } else {
           var lock = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
-          lock.call(getBrowserOrientation());
-          lockOrientation(true);
+          lock(getBrowserOrientation());
+          //lockOrientation(true);
         }
 
       } else {
