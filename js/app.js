@@ -84,6 +84,7 @@
   }
 
   function onOrientationChange(event) {
+    console.log(event);
     var heading = event.alpha;
 
     var diff = Math.abs(heading - headingPrevious);
