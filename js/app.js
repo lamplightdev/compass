@@ -163,16 +163,31 @@
     }
   }
 
+  function toggleLockable(lockable) {
+    isLockable = lockable;
+
+    if (isLockable) {
+    } else {
+      btnLockOrientation.style.display = "none";
+
+      btnNightmode.classList.add("column-33");
+      btnNightmode.classList.remove("column-25");
+      btnMap.classList.add("column-33");
+      btnMap.classList.remove("column-25");
+      btnInfo.classList.add("column-33");
+      btnInfo.classList.remove("column-25");
+    }
+  }
+
   function checkLockable(userGenerated, keepFullscreen) {
     if (screen.orientation && screen.orientation.lock) {
       screen.orientation.lock(getBrowserOrientation()).then(function () {
-        isLockable = true;
-        browserUnlockOrientation();
+        toggleLockable(true);
       }).catch(function (event) {
         if (event.code === 18) { // The page needs to be fullscreen in order to call lockOrientation(), but is lockable
-          isLockable = true;
+          toggleLockable(true);
         } else {  // lockOrientation() is not available on this device (or other error)
-          isLockable = false;
+          toggleLockable(false);
         }
       });
     } else {
@@ -191,12 +206,12 @@
         }
 
         if (success) {
-          isLockable = true;
+          toggleLockable(true);
         } else {
-          isLockable = false;
+          toggleLockable(false);
         }
 
-        if (!keepFullscreen) {
+        if (!success || !keepFullscreen) {
           browserExitFullscreen();
         }
       }
@@ -205,17 +220,6 @@
 
   function toggleOrientationChangePossible(possible) {
     isOrientationChangePossible = possible;
-
-    if (isLockable && possible) {
-      btnLockOrientation.classList.add("show");
-
-      btnNightmode.classList.add("column-25");
-      btnNightmode.classList.remove("column-33");
-      btnMap.classList.add("column-25");
-      btnMap.classList.remove("column-33");
-      btnInfo.classList.add("column-25");
-      btnInfo.classList.remove("column-33");
-    }
   }
 
   function lockOrientationRequest(doLock) {
@@ -353,6 +357,6 @@
   });
 
   setNightmode(false);
-  checkLockable();
+  checkLockable(false, false);
 
 }());
