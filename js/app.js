@@ -89,7 +89,7 @@
   }
 
   function onOrientationChange(event) {
-    if (!isOrientationChangePossible && event.alpha) {
+    if (!isOrientationChangePossible && typeof event.alpha !== "undefined") {
       toggleOrientationChangePossible(true);
     }
 
