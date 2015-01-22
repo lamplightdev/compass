@@ -69,8 +69,8 @@ header {
   right: 0;
   left: 0;
 
-  transition: transform 0.5s ease-out 0s;
   transition: -webkit-transform 0.5s ease-out 0s;
+  transition: transform 0.5s ease-out 0s;
 }
 
 
@@ -82,8 +82,8 @@ header {
   overflow: hidden;
 
   height: 100%;
-  transition: transform 0.5s ease-out 0s;
   transition: -webkit-transform 0.5s ease-out 0s;
+  transition: transform 0.5s ease-out 0s;
 }
 
 
