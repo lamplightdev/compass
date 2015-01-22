@@ -142,8 +142,13 @@
         }).catch(function () {
         });
       } else {
-        var lock = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
-        lock(getBrowserOrientation());
+        if (screen.lockOrientation) {
+          screen.lockOrientation(getBrowserOrientation());
+        } else if (screen.mozLockOrientation) {
+          screen.mozLockOrientation(getBrowserOrientation());
+        } else if (screen.msLockOrientation) {
+          screen.msLockOrientation(getBrowserOrientation());
+        }
       }
     } else {
       lockOrientationRequest(false);
