@@ -144,8 +144,8 @@
   }
 
   function onFullscreenChange() {
-    if (getBrowserFullscreenElement()) {
-      if (isLockable === true) {
+    if (isLockable && getBrowserFullscreenElement()) {
+      if (screen.orientation && screen.orientation.lock) {
         screen.orientation.lock(getBrowserOrientation()).then(function () {
         }).catch(function () {
         });
@@ -165,9 +165,34 @@
 
   function checkLockable() {
     if (screen.orientation && screen.orientation.lock) {
-      isLockable = true;
+      screen.orientation.lock(getBrowserOrientation()).then(function () {
+        isLockable = true;
+        browserUnlockOrientation();
+      }).catch(function (event) {
+        if (event.code === 18) { // The page needs to be fullscreen in order to call lockOrientation(), but is lockable
+          isLockable = true;
+        } else {  // lockOrientation() is not available on this device (or other error)
+          isLockable = false;
+        }
+      });
     } else {
-      isLockable = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
+      browserRequestFullscreen();
+
+      var success = false;
+      if (screen.lockOrientation) {
+        success = screen.lockOrientation(getBrowserOrientation());
+      } else if (screen.mozLockOrientation) {
+        success = screen.mozLockOrientation(getBrowserOrientation());
+      } else if (screen.msLockOrientation) {
+        success = screen.msLockOrientation(getBrowserOrientation());
+      }
+
+      if (success) {
+        isLockable = true;
+      } else {
+        isLockable = false;
+      }
+      browserExitFullscreen();
     }
   }
 
@@ -191,20 +216,6 @@
       if (doLock) {
         browserRequestFullscreen();
         lockOrientation(true);
-        /*
-        if (screen.orientation && screen.orientation.lock) {
-          screen.orientation.lock(getBrowserOrientation()).then(function () {
-            //lockOrientation(true);  // this will instead be called from onFullscreenChange()
-          }).catch(function () {
-            //shouldn't get here as we've already checked in checkOrientationChangePossible if this will fail
-          });
-        } else {
-          var lock = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
-          lock(getBrowserOrientation());
-          //lockOrientation(true);
-        }
-        */
-
       } else {
         browserUnlockOrientation();
         browserExitFullscreen();
