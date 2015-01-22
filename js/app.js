@@ -22,6 +22,7 @@
   var rotations = 0;
   var isOrientationLocked;
   var isNightMode;
+  var isLockable = false;
   var isOrientationChangePossible = false;
 
   var defaultOrientation;
@@ -108,7 +109,7 @@
     var orientation = getBrowserOrientation();
     var adjustment = 0;
 
-    if (typeof orientation !== "undefined") {
+    if (typeof orientation !== "undefined") { //webkit doesn't support screen.orientation
       var currentOrientation = orientation.split("-");
 
       if (defaultOrientation === "landscape") {
@@ -144,7 +145,7 @@
 
   function onFullscreenChange() {
     if (getBrowserFullscreenElement()) {
-      if (screen.orientation && screen.orientation.lock) {
+      if (isLockable === true) {
         screen.orientation.lock(getBrowserOrientation()).then(function () {
         }).catch(function () {
         });
@@ -162,35 +163,18 @@
     }
   }
 
-  function checkOrientationChangePossible() {
+  function checkLockable() {
     if (screen.orientation && screen.orientation.lock) {
-      screen.orientation.lock(getBrowserOrientation()).then(function () {
-        toggleOrientationChangePossible(true);
-        browserUnlockOrientation();
-      }).catch(function (event) {
-        if (event.code === 18) { // The page needs to be fullscreen in order to call lockOrientation()
-          toggleOrientationChangePossible(true);
-        } else {  // lockOrientation() is not available on this device (or other error)
-          toggleOrientationChangePossible(false);
-        }
-      });
+      isLockable = true;
     } else {
-      var lock = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
-
-      browserRequestFullscreen();
-      if (lock.call(getBrowserOrientation())) {
-        toggleOrientationChangePossible(true);
-      } else {
-        toggleOrientationChangePossible(false);
-      }
-      browserExitFullscreen();
+      isLockable = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
     }
   }
 
   function toggleOrientationChangePossible(possible) {
     isOrientationChangePossible = possible;
 
-    if (possible) {
+    if (isLockable && possible) {
       btnLockOrientation.classList.add("show");
 
       btnNightmode.classList.add("column-25");
@@ -203,7 +187,7 @@
   }
 
   function lockOrientationRequest(doLock) {
-    if (isOrientationChangePossible && doLock !== isOrientationLocked) {
+    if (isOrientationChangePossible && isLockable && doLock !== isOrientationLocked) {
       if (doLock) {
         browserRequestFullscreen();
         lockOrientation(true);
@@ -343,6 +327,6 @@
   });
 
   setNightmode(false);
-  //checkOrientationChangePossible();
+  checkLockable();
 
 }());
