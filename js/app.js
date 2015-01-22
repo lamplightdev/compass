@@ -33,6 +33,7 @@
       orientation = screen.orientation.type;
     } else {
       orientation = screen.orientation ||
+                    screen.webkitOrientation ||
                     screen.mozOrientation ||
                     screen.msOrientation;
     }
@@ -105,7 +106,6 @@
       }
     }
 
-    alert(getBrowserOrientation());
     var orientation = getBrowserOrientation();
     var adjustment = 0;
     var currentOrientation = orientation.split("-");
