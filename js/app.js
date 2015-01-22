@@ -93,6 +93,8 @@
       toggleOrientationChangePossible(true);
     }
 
+    alert(event.alpha);
+
     var heading = event.alpha;
 
     var diff = Math.abs(heading - headingPrevious);
