@@ -149,14 +149,6 @@
         screen.orientation.lock(getBrowserOrientation()).then(function () {
         }).catch(function () {
         });
-      } else {
-        if (screen.lockOrientation) {
-          screen.lockOrientation(getBrowserOrientation());
-        } else if (screen.mozLockOrientation) {
-          screen.mozLockOrientation(getBrowserOrientation());
-        } else if (screen.msLockOrientation) {
-          screen.msLockOrientation(getBrowserOrientation());
-        }
       }
     } else {
       lockOrientationRequest(false);
@@ -167,8 +159,16 @@
     isLockable = lockable;
 
     if (isLockable) {
+      btnLockOrientation.classList.remove("btn--hide");
+
+      btnNightmode.classList.add("column-25");
+      btnNightmode.classList.remove("column-33");
+      btnMap.classList.add("column-25");
+      btnMap.classList.remove("column-33");
+      btnInfo.classList.add("column-25");
+      btnInfo.classList.remove("column-33");
     } else {
-      btnLockOrientation.style.display = "none";
+      btnLockOrientation.classList.add("btn--hide");
 
       btnNightmode.classList.add("column-33");
       btnNightmode.classList.remove("column-25");
@@ -179,7 +179,7 @@
     }
   }
 
-  function checkLockable(userGenerated, keepFullscreen) {
+  function checkLockable() {
     if (screen.orientation && screen.orientation.lock) {
       screen.orientation.lock(getBrowserOrientation()).then(function () {
         toggleLockable(true);
@@ -191,30 +191,7 @@
         }
       });
     } else {
-      if (!userGenerated) {
-        //defer until user clicks lock button
-      } else {
-        browserRequestFullscreen(); //has to be called by a user generated event
-
-        var success = false;
-        if (screen.lockOrientation) {
-          success = screen.lockOrientation(getBrowserOrientation());
-        } else if (screen.mozLockOrientation) {
-          success = screen.mozLockOrientation(getBrowserOrientation());
-        } else if (screen.msLockOrientation) {
-          success = screen.msLockOrientation(getBrowserOrientation());
-        }
-
-        if (success) {
-          toggleLockable(true);
-        } else {
-          toggleLockable(false);
-        }
-
-        if (!success || !keepFullscreen) {
-          browserExitFullscreen();
-        }
-      }
+      toggleLockable(false);
     }
   }
 
@@ -246,13 +223,7 @@
   }
 
   function toggleOrientationLock() {
-    if (!isLockable) {
-      checkLockable(true, !isOrientationLocked);
-    }
-
-    if (!isLockable) {
-
-    } else {
+    if (isLockable) {
       lockOrientationRequest(!isOrientationLocked);
     }
   }
@@ -357,6 +328,6 @@
   });
 
   setNightmode(false);
-  checkLockable(false, false);
+  checkLockable();
 
 }());
