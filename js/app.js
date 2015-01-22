@@ -163,7 +163,7 @@
     }
   }
 
-  function checkLockable() {
+  function checkLockable(userGenerated, keepFullscreen) {
     if (screen.orientation && screen.orientation.lock) {
       screen.orientation.lock(getBrowserOrientation()).then(function () {
         isLockable = true;
@@ -176,23 +176,30 @@
         }
       });
     } else {
-      browserRequestFullscreen();
-
-      var success = false;
-      if (screen.lockOrientation) {
-        success = screen.lockOrientation(getBrowserOrientation());
-      } else if (screen.mozLockOrientation) {
-        success = screen.mozLockOrientation(getBrowserOrientation());
-      } else if (screen.msLockOrientation) {
-        success = screen.msLockOrientation(getBrowserOrientation());
-      }
-
-      if (success) {
-        isLockable = true;
+      if (!userGenerated) {
+        //defer until user clicks lock button
       } else {
-        isLockable = false;
+        browserRequestFullscreen(); //has to be called by a user generated event
+
+        var success = false;
+        if (screen.lockOrientation) {
+          success = screen.lockOrientation(getBrowserOrientation());
+        } else if (screen.mozLockOrientation) {
+          success = screen.mozLockOrientation(getBrowserOrientation());
+        } else if (screen.msLockOrientation) {
+          success = screen.msLockOrientation(getBrowserOrientation());
+        }
+
+        if (success) {
+          isLockable = true;
+        } else {
+          isLockable = false;
+        }
+
+        if (!keepFullscreen) {
+          browserExitFullscreen();
+        }
       }
-      browserExitFullscreen();
     }
   }
 
@@ -235,7 +242,15 @@
   }
 
   function toggleOrientationLock() {
-    lockOrientationRequest(!isOrientationLocked);
+    if (!isLockable) {
+      checkLockable(true, !isOrientationLocked);
+    }
+
+    if (!isLockable) {
+
+    } else {
+      lockOrientationRequest(!isOrientationLocked);
+    }
   }
 
   function locationUpdate(position) {
