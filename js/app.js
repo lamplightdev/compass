@@ -132,9 +132,9 @@
     var phase = positionCurrent.hng < 0 ? 360 + positionCurrent.hng : positionCurrent.hng;
     positionHng.textContent = (360 - phase | 0) + "°";
 
-    if (rose.style.transform) {
+    if (typeof rose.style.transform !== "undefined") {
       rose.style.transform = "rotateZ(" + (positionCurrent.hng + rotations*360) + "deg)";
-    } else if (rose.style.webkitTransform) {
+    } else if (typeof rose.style.webkitTransform !== "undefined") {
       rose.style.webkitTransform = "rotateZ(" + (positionCurrent.hng + rotations*360) + "deg)";
     }
   }
