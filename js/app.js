@@ -33,7 +33,6 @@
       orientation = screen.orientation.type;
     } else {
       orientation = screen.orientation ||
-                    screen.webkitOrientation ||
                     screen.mozOrientation ||
                     screen.msOrientation;
     }
@@ -108,22 +107,25 @@
 
     var orientation = getBrowserOrientation();
     var adjustment = 0;
-    var currentOrientation = orientation.split("-");
 
-    if (defaultOrientation === "landscape") {
-      adjustment -= 90;
-    }
+    if (typeof orientation !== "undefined") {
+      var currentOrientation = orientation.split("-");
 
-    if (defaultOrientation !== currentOrientation[0]) {
       if (defaultOrientation === "landscape") {
-        adjustment -= 270;
-      } else {
         adjustment -= 90;
       }
-    }
 
-    if (currentOrientation[1] === "secondary") {
-      adjustment -= 180;
+      if (defaultOrientation !== currentOrientation[0]) {
+        if (defaultOrientation === "landscape") {
+          adjustment -= 270;
+        } else {
+          adjustment -= 90;
+        }
+      }
+
+      if (currentOrientation[1] === "secondary") {
+        adjustment -= 180;
+      }
     }
 
     headingPrevious = heading;
