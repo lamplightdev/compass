@@ -93,8 +93,6 @@
       toggleOrientationChangePossible(true);
     }
 
-    alert(event.alpha);
-
     var heading = event.alpha;
 
     var diff = Math.abs(heading - headingPrevious);
@@ -107,6 +105,7 @@
       }
     }
 
+    alert(getBrowserOrientation());
     var orientation = getBrowserOrientation();
     var adjustment = 0;
     var currentOrientation = orientation.split("-");
