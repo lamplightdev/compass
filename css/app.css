@@ -70,6 +70,7 @@ header {
   left: 0;
 
   transition: transform 0.5s ease-out 0s;
+  transition: -webkit-transform 0.5s ease-out 0s;
 }
 
 
@@ -82,6 +83,7 @@ header {
 
   height: 100%;
   transition: transform 0.5s ease-out 0s;
+  transition: -webkit-transform 0.5s ease-out 0s;
 }
 
 
@@ -241,10 +243,12 @@ html.nightmode {
 
   html.nightmode .container {
     transform: translateY(-2rem);
+    -webkit-transform: translateY(-2rem);
   }
 
   html.nightmode header {
     transform: translateY(-4rem);
+    -webkit-transform: translateY(-4rem);
   }
 
   html.nightmode .label {
