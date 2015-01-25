@@ -19,7 +19,7 @@
   var popupButtons = document.querySelectorAll(".btn-popup");
   var popup = document.getElementById("popup");
   var popupContents = document.getElementById("popup-contents");
-  var popupInners = document.querySelectorAll(".poppup__iner");
+  var popupInners = document.querySelectorAll(".popup__inner");
 
   var btnLockOrientation = document.getElementById("btn-lock-orientation");
   var btnNightmode = document.getElementById("btn-nightmode");
@@ -201,7 +201,7 @@
     if (screen.orientation && screen.orientation.lock) {
       screen.orientation.lock(getBrowserOrientation()).then(function () {
         toggleOrientationLockable(true);
-        browserUnlockOrientation(); //needed as chrome was locking orientation (even if not in fullscreen, bug??)
+        browserUnlockOrientation();
       }).catch(function (event) {
         if (event.code === 18) { // The page needs to be fullscreen in order to call lockOrientation(), but is lockable
           toggleOrientationLockable(true);
