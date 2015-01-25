@@ -10,6 +10,8 @@
   var positionLat = document.getElementById("position-lat");
   var positionLng = document.getElementById("position-lng");
   var positionHng = document.getElementById("position-hng");
+  var debugOrientation = document.getElementById("debug-orientation");
+  var debugOrientationDefault = document.getElementById("debug-orientation-default");
   var infoPopup = document.getElementById("info-popup");
   var infoPopupContent = document.getElementById("info-popup-content");
 
@@ -107,6 +109,8 @@
     }
 
     var orientation = getBrowserOrientation();
+    debugOrientation.textContent = orientation;
+
     var adjustment = 0;
 
     if (typeof orientation !== "undefined") { //webkit doesn't support screen.orientation
@@ -306,6 +310,7 @@
   } else {
     defaultOrientation = "portrait";
   }
+  debugOrientationDefault.textContent = defaultOrientation;
 
   window.addEventListener("deviceorientation", onOrientationChange);
 
