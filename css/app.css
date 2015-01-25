@@ -218,7 +218,7 @@ header {
   background-color: rgba(0, 0, 0, 0.8);
 }
 
-.popup.show {
+.popup.popup--show {
   display: block;
 }
 
@@ -226,13 +226,37 @@ header {
     max-width: 300px;
     margin: 0 auto;
 
-    padding: 2rem;
 
     background-color: white;
     color: black;
   }
 
+    .popup__contents {
+      padding: 1rem;
+    }
 
+      .popup__inner {
+
+      }
+
+        .popup__inner--hide {
+          display: none;
+        }
+
+    .popup__close {
+      display: block;
+      padding: 1rem;
+      text-align: right;
+      width: 100%;
+      border: 0;
+      background: transparent;
+      outline: none;
+    }
+
+      .popup__close:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
 
 
 

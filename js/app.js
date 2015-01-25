@@ -7,25 +7,32 @@
     lng: null,
     hng: null
   };
+
+  var debug = false;
+
   var positionLat = document.getElementById("position-lat");
   var positionLng = document.getElementById("position-lng");
   var positionHng = document.getElementById("position-hng");
   var debugOrientation = document.getElementById("debug-orientation");
   var debugOrientationDefault = document.getElementById("debug-orientation-default");
-  var infoPopup = document.getElementById("info-popup");
-  var infoPopupContent = document.getElementById("info-popup-content");
+
+  var popupButtons = document.querySelectorAll(".btn-popup");
+  var popup = document.getElementById("popup");
+  var popupContents = document.getElementById("popup-contents");
+  var popupInners = document.querySelectorAll(".poppup__iner");
 
   var btnLockOrientation = document.getElementById("btn-lock-orientation");
   var btnNightmode = document.getElementById("btn-nightmode");
   var btnMap = document.getElementById("btn-map");
   var btnInfo = document.getElementById("btn-info");
 
+  var orientationWarningShown = false;
+
   var headingPrevious = 0;
   var rotations = 0;
+  var isOrientationLockable = false;
   var isOrientationLocked;
   var isNightMode;
-  var isLockable = false;
-  var isOrientationChangePossible = false;
 
   var defaultOrientation;
 
@@ -92,28 +99,25 @@
   }
 
   function onOrientationChange(event) {
-    if (!isOrientationChangePossible && typeof event.alpha !== "undefined") {
-      toggleOrientationChangePossible(true);
-    }
-
     var heading = event.alpha;
-
-    var diff = Math.abs(heading - headingPrevious);
-
-    if(diff > 300) {
-      if(heading - headingPrevious < 0) {
-        rotations++;
-      } else {
-        rotations--;
-      }
-    }
-
     var orientation = getBrowserOrientation();
-    debugOrientation.textContent = orientation;
 
-    var adjustment = 0;
+    if (typeof heading !== "undefined" && typeof orientation !== "undefined") {
+      var diff = Math.abs(heading - headingPrevious);
 
-    if (typeof orientation !== "undefined") { //webkit doesn't support screen.orientation
+      if(diff > 300) {
+        if(heading - headingPrevious < 0) {
+          rotations++;
+        } else {
+          rotations--;
+        }
+      }
+
+      if (debug) {
+        debugOrientation.textContent = orientation;
+      }
+
+      var adjustment = 0;
       var currentOrientation = orientation.split("-");
 
       if (defaultOrientation === "landscape") {
@@ -131,24 +135,34 @@
       if (currentOrientation[1] === "secondary") {
         adjustment -= 180;
       }
+
+      headingPrevious = heading;
+
+      positionCurrent.hng = heading + adjustment;
+
+      var phase = positionCurrent.hng < 0 ? 360 + positionCurrent.hng : positionCurrent.hng;
+      positionHng.textContent = (360 - phase | 0) + "°";
+
+      if (typeof rose.style.transform !== "undefined") {
+        rose.style.transform = "rotateZ(" + (positionCurrent.hng + rotations*360) + "deg)";
+      } else if (typeof rose.style.webkitTransform !== "undefined") {
+        rose.style.webkitTransform = "rotateZ(" + (positionCurrent.hng + rotations*360) + "deg)";
+      }
+    } else {
+      positionHng.textContent = "n/a";
+      showOrientationWarning();
     }
+  }
 
-    headingPrevious = heading;
-
-    positionCurrent.hng = heading + adjustment;
-
-    var phase = positionCurrent.hng < 0 ? 360 + positionCurrent.hng : positionCurrent.hng;
-    positionHng.textContent = (360 - phase | 0) + "°";
-
-    if (typeof rose.style.transform !== "undefined") {
-      rose.style.transform = "rotateZ(" + (positionCurrent.hng + rotations*360) + "deg)";
-    } else if (typeof rose.style.webkitTransform !== "undefined") {
-      rose.style.webkitTransform = "rotateZ(" + (positionCurrent.hng + rotations*360) + "deg)";
+  function showOrientationWarning() {
+    if (!orientationWarningShown) {
+      popupOpen("noorientation");
+      orientationWarningShown = true;
     }
   }
 
   function onFullscreenChange() {
-    if (isLockable && getBrowserFullscreenElement()) {
+    if (isOrientationLockable && getBrowserFullscreenElement()) {
       if (screen.orientation && screen.orientation.lock) {
         screen.orientation.lock(getBrowserOrientation()).then(function () {
         }).catch(function () {
@@ -159,10 +173,10 @@
     }
   }
 
-  function toggleLockable(lockable) {
-    isLockable = lockable;
+  function toggleOrientationLockable(lockable) {
+    isOrientationLockable = lockable;
 
-    if (isLockable) {
+    if (isOrientationLockable) {
       btnLockOrientation.classList.remove("btn--hide");
 
       btnNightmode.classList.add("column-25");
@@ -186,25 +200,21 @@
   function checkLockable() {
     if (screen.orientation && screen.orientation.lock) {
       screen.orientation.lock(getBrowserOrientation()).then(function () {
-        toggleLockable(true);
+        toggleOrientationLockable(true);
       }).catch(function (event) {
         if (event.code === 18) { // The page needs to be fullscreen in order to call lockOrientation(), but is lockable
-          toggleLockable(true);
+          toggleOrientationLockable(true);
         } else {  // lockOrientation() is not available on this device (or other error)
-          toggleLockable(false);
+          toggleOrientationLockable(false);
         }
       });
     } else {
-      toggleLockable(false);
+      toggleOrientationLockable(false);
     }
   }
 
-  function toggleOrientationChangePossible(possible) {
-    isOrientationChangePossible = possible;
-  }
-
   function lockOrientationRequest(doLock) {
-    if (isOrientationChangePossible && isLockable && doLock !== isOrientationLocked) {
+    if (isOrientationLockable) {
       if (doLock) {
         browserRequestFullscreen();
         lockOrientation(true);
@@ -227,7 +237,7 @@
   }
 
   function toggleOrientationLock() {
-    if (isLockable) {
+    if (isOrientationLockable) {
       lockOrientationRequest(!isOrientationLocked);
     }
   }
@@ -241,6 +251,8 @@
   }
 
   function locationUpdateFail(error) {
+    positionLat.textContent = "n/a";
+    positionLng.textContent = "n/a";
     console.log("location fail: ", error);
   }
 
@@ -272,15 +284,25 @@
     window.open("https://www.google.com/maps/place/@" + positionCurrent.lat + "," + positionCurrent.lng + ",16z", "_blank");
   }
 
-  function openInfoPopup() {
-    infoPopup.classList.add("show");
+  function popupOpenFromClick(event) {
+    popupOpen(event.currentTarget.dataset.name);
   }
 
-  function closeInfoPopup() {
-    infoPopup.classList.remove("show");
+  function popupOpen(name) {
+    var i;
+    for (i=0; i<popupInners.length; i++) {
+      popupInners[i].classList.add("popup__inner--hide");
+    }
+    document.getElementById("popup-inner-" + name).classList.remove("popup__inner--hide");
+
+    popup.classList.add("popup--show");
   }
 
-  function infoPopupContentClick(event) {
+  function popupClose() {
+    popup.classList.remove("popup--show");
+  }
+
+  function popupContentsClick(event) {
     event.stopPropagation();
   }
 
@@ -310,7 +332,9 @@
   } else {
     defaultOrientation = "portrait";
   }
-  debugOrientationDefault.textContent = defaultOrientation;
+  if (debug) {
+    debugOrientationDefault.textContent = defaultOrientation;
+  }
 
   window.addEventListener("deviceorientation", onOrientationChange);
 
@@ -322,9 +346,14 @@
   btnLockOrientation.addEventListener("click", toggleOrientationLock);
   btnNightmode.addEventListener("click", toggleNightmode);
   btnMap.addEventListener("click", openMap);
-  btnInfo.addEventListener("click", openInfoPopup);
-  infoPopup.addEventListener("click", closeInfoPopup);
-  infoPopupContent.addEventListener("click", infoPopupContentClick);
+
+  var i;
+  for (i=0; i<popupButtons.length; i++) {
+    popupButtons[i].addEventListener("click", popupOpenFromClick);
+  }
+
+  popup.addEventListener("click", popupClose);
+  popupContents.addEventListener("click", popupContentsClick);
 
   navigator.geolocation.watchPosition(locationUpdate, locationUpdateFail, {
     enableHighAccuracy: false,

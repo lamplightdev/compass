@@ -79,7 +79,7 @@
     <div class='position row'>
       <div class='column-33'>
         <div class='label'>HDG</div>
-        <div id='position-hng'>&#8943;</div>
+        <div id='position-hng'>n/a</div>
       </div
       ><div class='column-33'>
         <div class='label'>Lat</div>
@@ -148,7 +148,7 @@
       </button
 
 
-      ><button id="btn-info" class="btn options__btn column-33" type="button">
+      ><button id="btn-info" class="btn btn-popup options__btn column-33" type="button" data-name='info'>
 
         <svg alt="info" class="btn__icon btn__icon--inactive" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="512px" height="512px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
 
@@ -168,11 +168,23 @@
   </div>
 
 
-  <div id="info-popup" class="popup">
+  <div id="popup" class="popup">
 
-    <div id="info-popup-content" class="popup__content">
+    <div id="popup-content" class="popup__content">
 
-      <p>Some text here</p>
+      <div id="popup-contents" class="popup__contents">
+        <div id="popup-inner-info" class="popup__inner popup__inner--hide">
+          Info
+        </div>
+
+        <div id="popup-inner-noorientation" class="popup__inner popup__inner--hide">
+          <p>
+            Unfortunately this browser doesn't support device orientation so will not show your correct heading.
+          </p>
+        </div>
+      </div>
+
+      <button id="popup-close" class="popup__close" href='#'>close</button>
 
     </div>
 
