@@ -153,8 +153,7 @@
     var heading = event.alpha;
     var orientation = getBrowserOrientation();
 
-    //if (typeof heading !== "undefined" && heading !== null && typeof orientation !== "undefined") {
-    if (true) {
+    if (typeof heading !== "undefined" && heading !== null && typeof orientation !== "undefined") {
       // we have a browser that reports device heading and orientation
 
 
@@ -167,7 +166,6 @@
       var adjustment = 0;
 
 
-      if (false) {
       var currentOrientation = orientation.split("-");
 
       if (defaultOrientation === "landscape") {
@@ -185,7 +183,6 @@
       if (currentOrientation[1] === "secondary") {
         adjustment -= 180;
       }
-    }
 
       positionCurrent.hng = heading + adjustment;
 
