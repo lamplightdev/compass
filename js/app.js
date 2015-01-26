@@ -153,7 +153,8 @@
     var heading = event.alpha;
     var orientation = getBrowserOrientation();
 
-    if (typeof heading !== "undefined" && heading !== null && typeof orientation !== "undefined") {
+    //if (typeof heading !== "undefined" && heading !== null && typeof orientation !== "undefined") {
+    if (true) {
       // we have a browser that reports device heading and orientation
 
 
