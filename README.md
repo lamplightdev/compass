@@ -6,4 +6,4 @@ Makes use of the HTML5 Location, Device Orientation, Screen Orientation, Screen 
 
 ## Browser support
 
-The app should work on any modern standards compliant browser that implements the above APIs. This is currently Chrome for Android, Opera for Android, Firefox for Android, and IE for Windows Phone. Only Chrome and Opera support the latest version of the screen lock API and so screen lock is only available on these browsers. Webkit based browsers - Safari on iOS (and therefore all browsers on iOS), Android Browser etc. - do not support
+The app should work on any modern standards compliant browser that implements the above APIs. This is currently Chrome for Android, Opera for Android, Firefox for Android, and IE for Windows Phone. Only Chrome and Opera support the latest version of the screen lock API and so screen lock is only available on these browsers. Webkit based browsers - Safari on iOS (and therefore all browsers on iOS), Android Browser etc. - do not implement the screen orientation API so will show incorrect results if the device is turned from portrait.
