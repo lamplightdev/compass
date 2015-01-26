@@ -14,5 +14,5 @@
     "undef": true,
     "unused": true,
     "white": true,
-    "predef": ["document", "window", "screen", "console", "location", "navigator", "localStorage", "Typekit"]
+    "predef": ["document", "window", "screen", "console", "location", "navigator", "FastClick"]
 }
