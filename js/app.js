@@ -2,7 +2,7 @@
   "use strict";
 
   //set to true for debugging output
-  var debug = true;
+  var debug = false;
 
   // our current position
   var positionCurrent = {
