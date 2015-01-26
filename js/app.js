@@ -1,42 +1,66 @@
 (function () {
   "use strict";
 
-  var rose = document.getElementById("rose");
+  //set to true for debugging output
+  var debug = false;
+
+  // our current position
   var positionCurrent = {
     lat: null,
     lng: null,
     hng: null
   };
 
-  var debug = false;
 
+  // the outer part of the compass that rotates
+  var rose = document.getElementById("rose");
+
+
+  // elements that ouput our position
   var positionLat = document.getElementById("position-lat");
   var positionLng = document.getElementById("position-lng");
   var positionHng = document.getElementById("position-hng");
+
+
+  // debug outputs
   var debugOrientation = document.getElementById("debug-orientation");
   var debugOrientationDefault = document.getElementById("debug-orientation-default");
 
-  var popupButtons = document.querySelectorAll(".btn-popup");
+
+  // info popup elements, pus buttons that open popups
   var popup = document.getElementById("popup");
   var popupContents = document.getElementById("popup-contents");
   var popupInners = document.querySelectorAll(".popup__inner");
+  var btnsPopup = document.querySelectorAll(".btn-popup");
 
+
+  // buttons at the bottom of the screen
   var btnLockOrientation = document.getElementById("btn-lock-orientation");
   var btnNightmode = document.getElementById("btn-nightmode");
   var btnMap = document.getElementById("btn-map");
   var btnInfo = document.getElementById("btn-info");
 
-  var orientationWarningShown = false;
 
-  var headingPrevious = 0;
-  var rotations = 0;
+  // if we have shown the heading unavailable warning yet
+  var warningHeadingShown = false;
+
+
+  // switches keeping track of our current app state
   var isOrientationLockable = false;
-  var isOrientationLocked;
-  var isNightMode;
+  var isOrientationLocked = false;
+  var isNightMode = false;
 
+
+  // how many full rotations the compass rose has made
+  var rotations = 0;
+  // used in keeping track of these rotations
+  var headingPrevious = 0;
+  // the orientation of the device on app load
   var defaultOrientation;
 
 
+
+  // browser agnostic orientation
   function getBrowserOrientation() {
     var orientation;
     if (screen.orientation && screen.orientation.type) {
@@ -50,6 +74,8 @@
     return orientation;
   }
 
+
+  // browser agnostic orientation unlock
   function browserUnlockOrientation() {
     if (screen.orientation && screen.orientation.unlock) {
       screen.orientation.unlock();
@@ -62,6 +88,8 @@
     }
   }
 
+
+  // browser agnostic document.fullscreenElement
   function getBrowserFullscreenElement() {
     if (typeof document.fullscreenElement !== "undefined") {
       return document.fullscreenElement;
@@ -74,6 +102,8 @@
     }
   }
 
+
+  // browser agnostic document.documentElement.requestFullscreen
   function browserRequestFullscreen() {
     if (document.documentElement.requestFullscreen) {
       document.documentElement.requestFullscreen();
@@ -86,6 +116,8 @@
     }
   }
 
+
+  // browser agnostic document.documentElement.exitFullscreen
   function browserExitFullscreen() {
     if (document.exitFullscreen) {
       document.exitFullscreen();
@@ -98,17 +130,28 @@
     }
   }
 
-  function onOrientationChange(event) {
+
+  // called on device orientation change
+  function onHeadingChange(event) {
     var heading = event.alpha;
     var orientation = getBrowserOrientation();
 
-    if (typeof heading !== "undefined" && typeof orientation !== "undefined") {
+    if (typeof heading !== "undefined" && heading !== null && typeof orientation !== "undefined") {
+      // we have a browser that reports device heading and orientation
+
+      // how much has our heading changed since last call
       var diff = Math.abs(heading - headingPrevious);
 
+
       if(diff > 300) {
+        // we have moved the device past N
+
         if(heading - headingPrevious < 0) {
+          // turned clockwise
+
           rotations++;
         } else {
+          // turned anti-clockwise
           rotations--;
         }
       }
@@ -144,9 +187,9 @@
       positionHng.textContent = (360 - phase | 0) + "°";
 
       if (typeof rose.style.transform !== "undefined") {
-        rose.style.transform = "rotateZ(" + (positionCurrent.hng + rotations*360) + "deg)";
+        rose.style.transform = "rotateZ(" + positionCurrent.hng + "deg)";
       } else if (typeof rose.style.webkitTransform !== "undefined") {
-        rose.style.webkitTransform = "rotateZ(" + (positionCurrent.hng + rotations*360) + "deg)";
+        rose.style.webkitTransform = "rotateZ(" + positionCurrent.hng + "deg)";
       }
     } else {
       positionHng.textContent = "n/a";
@@ -155,9 +198,9 @@
   }
 
   function showOrientationWarning() {
-    if (!orientationWarningShown) {
+    if (!warningHeadingShown) {
       popupOpen("noorientation");
-      orientationWarningShown = true;
+      warningHeadingShown = true;
     }
   }
 
@@ -338,7 +381,7 @@
     debugOrientationDefault.textContent = defaultOrientation;
   }
 
-  window.addEventListener("deviceorientation", onOrientationChange);
+  window.addEventListener("deviceorientation", onHeadingChange);
 
   document.addEventListener("fullscreenchange", onFullscreenChange);
   document.addEventListener("webkitfullscreenchange", onFullscreenChange);
@@ -350,8 +393,8 @@
   btnMap.addEventListener("click", openMap);
 
   var i;
-  for (i=0; i<popupButtons.length; i++) {
-    popupButtons[i].addEventListener("click", popupOpenFromClick);
+  for (i=0; i<btnsPopup.length; i++) {
+    btnsPopup[i].addEventListener("click", popupOpenFromClick);
   }
 
   popup.addEventListener("click", popupClose);
