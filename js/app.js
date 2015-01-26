@@ -2,7 +2,7 @@
   "use strict";
 
   //set to true for debugging output
-  var debug = false;
+  var debug = true;
 
   // our current position
   var positionCurrent = {
@@ -51,13 +51,8 @@
   var isNightMode = false;
 
 
-  // how many full rotations the compass rose has made
-  var rotations = 0;
-  // used in keeping track of these rotations
-  var headingPrevious = 0;
   // the orientation of the device on app load
   var defaultOrientation;
-
 
 
   // browser agnostic orientation
@@ -139,29 +134,25 @@
     if (typeof heading !== "undefined" && heading !== null && typeof orientation !== "undefined") {
       // we have a browser that reports device heading and orientation
 
-      // how much has our heading changed since last call
-      var diff = Math.abs(heading - headingPrevious);
-
-
-      if(diff > 300) {
-        // we have moved the device past N
-
-        if(heading - headingPrevious < 0) {
-          // turned clockwise
-
-          rotations++;
-        } else {
-          // turned anti-clockwise
-          rotations--;
-        }
-      }
 
       if (debug) {
         debugOrientation.textContent = orientation;
       }
 
+
+      // what adjustment we have to add to rotation to allow for current device orientation
       var adjustment = 0;
+
+
       var currentOrientation = orientation.split("-");
+      /*
+        orientation will return:
+        'portait-primary': for a phone (width < height)
+        'portait-secondary':
+        'landscape-primary':
+        'landscape-secondary':
+      */
+
 
       if (defaultOrientation === "landscape") {
         adjustment -= 90;
@@ -178,8 +169,6 @@
       if (currentOrientation[1] === "secondary") {
         adjustment -= 180;
       }
-
-      headingPrevious = heading;
 
       positionCurrent.hng = heading + adjustment;
 
