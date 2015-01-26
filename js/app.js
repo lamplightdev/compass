@@ -167,6 +167,7 @@
       var adjustment = 0;
 
 
+      if (false) {
       var currentOrientation = orientation.split("-");
 
       if (defaultOrientation === "landscape") {
@@ -184,6 +185,7 @@
       if (currentOrientation[1] === "secondary") {
         adjustment -= 180;
       }
+    }
 
       positionCurrent.hng = heading + adjustment;
 
