@@ -169,24 +169,24 @@
 
       // what adjustment we have to add to rotation to allow for current device orientation
       var adjustment = 0;
-
-
-      var currentOrientation = orientation.split("-");
-
       if (defaultOrientation === "landscape") {
         adjustment -= 90;
       }
 
-      if (defaultOrientation !== currentOrientation[0]) {
-        if (defaultOrientation === "landscape") {
-          adjustment -= 270;
-        } else {
-          adjustment -= 90;
-        }
-      }
+      if (typeof orientation !== "undefined") {
+        var currentOrientation = orientation.split("-");
 
-      if (currentOrientation[1] === "secondary") {
-        adjustment -= 180;
+        if (defaultOrientation !== currentOrientation[0]) {
+          if (defaultOrientation === "landscape") {
+            adjustment -= 270;
+          } else {
+            adjustment -= 90;
+          }
+        }
+
+        if (currentOrientation[1] === "secondary") {
+          adjustment -= 180;
+        }
       }
 
       positionCurrent.hng = heading + adjustment;
