@@ -66,6 +66,28 @@
                     screen.msOrientation;
     }
 
+    /*
+      'portait-primary':      for (screen width < screen height, e.g. phone, phablet, small tablet)
+                                device is in 'normal' orientation
+                              for (screen width > screen height, e.g. large tablet, laptop)
+                                device has been turned 90deg clockwise from normal
+
+      'portait-secondary':    for (screen width < screen height)
+                                device has been turned 180deg from normal
+                              for (screen width > screen height)
+                                device has been turned 90deg anti-clockwise (or 270deg clockwise) from normal
+
+      'landscape-primary':    for (screen width < screen height)
+                                device has been turned 90deg clockwise from normal
+                              for (screen width > screen height)
+                                device is in 'normal' orientation
+
+      'landscape-secondary':  for (screen width < screen height)
+                                device has been turned 90deg anti-clockwise (or 270deg clockwise) from normal
+                              for (screen width > screen height)
+                                device has been turned 180deg from normal
+    */
+
     return orientation;
   }
 
@@ -145,14 +167,6 @@
 
 
       var currentOrientation = orientation.split("-");
-      /*
-        orientation will return:
-        'portait-primary': for a phone (width < height)
-        'portait-secondary':
-        'landscape-primary':
-        'landscape-secondary':
-      */
-
 
       if (defaultOrientation === "landscape") {
         adjustment -= 90;
@@ -175,18 +189,22 @@
       var phase = positionCurrent.hng < 0 ? 360 + positionCurrent.hng : positionCurrent.hng;
       positionHng.textContent = (360 - phase | 0) + "°";
 
+
+      // apply rotation to compass rose
       if (typeof rose.style.transform !== "undefined") {
         rose.style.transform = "rotateZ(" + positionCurrent.hng + "deg)";
       } else if (typeof rose.style.webkitTransform !== "undefined") {
         rose.style.webkitTransform = "rotateZ(" + positionCurrent.hng + "deg)";
       }
     } else {
+      // device can't show heading
+
       positionHng.textContent = "n/a";
-      showOrientationWarning();
+      showHeadingWarning();
     }
   }
 
-  function showOrientationWarning() {
+  function showHeadingWarning() {
     if (!warningHeadingShown) {
       popupOpen("noorientation");
       warningHeadingShown = true;
