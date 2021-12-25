@@ -405,7 +405,7 @@ function requestDeviceOrientation(callback) {
 }
 
 function firstClick() {
-    requestDeviceMotion(function(err) {
+    requestDeviceOrientation(function(err) {
         if (err == null) {
             window.removeEventListener("click", firstClick);
             window.removeEventListener("touchend", firstClick);
