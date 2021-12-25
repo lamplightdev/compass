@@ -190,7 +190,7 @@
         }
       }
 
-      positionCurrent.hng = heading + window.orientation;// + adjustment;
+      positionCurrent.hng = heading - window.orientation;// + adjustment;
 
       var phase = positionCurrent.hng < 0 ? 360 + positionCurrent.hng : positionCurrent.hng;
       positionHng.textContent = (360 - phase | 0) + "°";
