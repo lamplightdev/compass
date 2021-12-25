@@ -158,6 +158,7 @@
 
     var orientation = getBrowserOrientation();
 
+
     if (typeof heading !== "undefined" && heading !== null) { // && typeof orientation !== "undefined") {
       // we have a browser that reports device heading and orientation
 
@@ -189,7 +190,7 @@
         }
       }
 
-      positionCurrent.hng = heading + adjustment;
+      positionCurrent.hng = heading + window.orientation;// + adjustment;
 
       var phase = positionCurrent.hng < 0 ? 360 + positionCurrent.hng : positionCurrent.hng;
       positionHng.textContent = (360 - phase | 0) + "°";
