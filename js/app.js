@@ -153,7 +153,7 @@
     var heading = event.alpha;
 
     if (typeof event.webkitCompassHeading !== "undefined") {
-      heading = event.webkitCompassHeading; //iOS non-standard
+      heading = -1*event.webkitCompassHeading; //iOS non-standard
     }
 
     var orientation = getBrowserOrientation();
@@ -189,7 +189,7 @@
         }
       }
 
-      positionCurrent.hng = -1*heading + adjustment;
+      positionCurrent.hng = heading + adjustment;
 
       var phase = positionCurrent.hng < 0 ? 360 + positionCurrent.hng : positionCurrent.hng;
       positionHng.textContent = (360 - phase | 0) + "°";
