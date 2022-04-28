@@ -150,11 +150,7 @@
 
   // called on device orientation change
   function onHeadingChange(event) {
-    var heading = event.alpha;
-
-    if (typeof event.webkitCompassHeading !== "undefined") {
-      heading = -1*event.webkitCompassHeading; //iOS non-standard
-    }
+    var heading = -1*event.webkitCompassHeading || Math.abs(event.alpha - 360);
 
     var orientation = getBrowserOrientation();
 
@@ -430,7 +426,11 @@ window.addEventListener("touchend", firstClick);
     debugOrientationDefault.textContent = defaultOrientation;
   }
 
-  window.addEventListener("deviceorientation", onHeadingChange);
+  if ('ondeviceorientationabsolute' in window) {
+    window.addEventListener("deviceorientationabsolute", onHeadingChange, true);
+  } else {
+    window.addEventListener("deviceorientation", onHeadingChange, true);
+  }
 
   document.addEventListener("fullscreenchange", onFullscreenChange);
   document.addEventListener("webkitfullscreenchange", onFullscreenChange);
