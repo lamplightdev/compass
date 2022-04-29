@@ -150,13 +150,10 @@
 
   // called on device orientation change
   function onHeadingChange(event) {
-    var heading = event.alpha;
-
-    if (typeof event.webkitCompassHeading !== "undefined") {
-      heading = event.webkitCompassHeading; //iOS non-standard
-    }
+    var heading = -1*event.webkitCompassHeading || event.alpha;
 
     var orientation = getBrowserOrientation();
+
 
     if (typeof heading !== "undefined" && heading !== null) { // && typeof orientation !== "undefined") {
       // we have a browser that reports device heading and orientation
@@ -189,7 +186,7 @@
         }
       }
 
-      positionCurrent.hng = heading + adjustment;
+      positionCurrent.hng = heading - window.orientation;// + adjustment;
 
       var phase = positionCurrent.hng < 0 ? 360 + positionCurrent.hng : positionCurrent.hng;
       positionHng.textContent = (360 - phase | 0) + "°";
@@ -384,6 +381,42 @@
     return degrees + "° " + minutes + "' " + seconds + "\" " + direction;
   }
 
+/**
+ * @param callback function(error)
+ * @author YellowAfterlife
+ **/
+function requestDeviceOrientation(callback) {
+    if (window.DeviceOrientationEvent == null) {
+        callback(new Error("DeviceOrientation is not supported."));
+    } else if (DeviceOrientationEvent.requestPermission) {
+        DeviceOrientationEvent.requestPermission().then(function(state) {
+            if (state == "granted") {
+                callback(null);
+            } else callback(new Error("Permission denied by user"));
+        }, function(err) {
+            callback(err);
+        });
+    } else { // no need for permission
+        callback(null);
+    }
+}
+
+function firstClick() {
+    requestDeviceOrientation(function(err) {
+        if (err == null) {
+            window.removeEventListener("click", firstClick);
+            window.removeEventListener("touchend", firstClick);
+            window.addEventListener("devicemotion", function(e) {
+                // access e.acceleration, etc.
+            });
+        } else {
+            // failed; a JS error object is stored in `err`
+        }
+    });
+}
+window.addEventListener("click", firstClick);
+window.addEventListener("touchend", firstClick);
+
   if (screen.width > screen.height) {
     defaultOrientation = "landscape";
   } else {
@@ -393,7 +426,11 @@
     debugOrientationDefault.textContent = defaultOrientation;
   }
 
-  window.addEventListener("deviceorientation", onHeadingChange);
+  if ('ondeviceorientationabsolute' in window) {
+    window.addEventListener("deviceorientationabsolute", onHeadingChange, true);
+  } else {
+    window.addEventListener("deviceorientation", onHeadingChange, true);
+  }
 
   document.addEventListener("fullscreenchange", onFullscreenChange);
   document.addEventListener("webkitfullscreenchange", onFullscreenChange);
