@@ -150,7 +150,7 @@
 
   // called on device orientation change
   function onHeadingChange(event) {
-    var heading = -1*event.webkitCompassHeading || Math.abs(event.alpha - 360);
+    var heading = -1*event.webkitCompassHeading || event.alpha;
 
     var orientation = getBrowserOrientation();
 
